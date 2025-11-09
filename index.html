@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 1. TITLE CHANGED -->
-    <title>Doral Academy Car-Line Admin Panel</title>
+    <title>Doral Academy Car-Line Admin Panel v4</title>
     
-    <!-- 2. Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;7.00&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 1. Chart.js for Analytics (REMOVED) -->
 
-    <!-- 3. Gruvbox Dark Theme & Layout Styles -->
     <style>
         /* Gruvbox Dark Colors */
         :root {
@@ -36,13 +35,11 @@
             color: var(--fg);
             margin: 0;
             padding: 0;
+            /* Added padding-top for the broadcast banner */
+            padding-top: 2.5rem;
         }
         .container {
-            /* UPDATED: Removed width and max-width constraints */
-            /* width: 95%; */
-            /* max-width: 1800px; */
             margin: 0 auto;
-            /* UPDATED: Reduced padding */
             padding: 0.75rem 1rem;
         }
         
@@ -50,24 +47,20 @@
         header {
             background-color: var(--bg-dark);
             color: var(--fg);
-            /* UPDATED: Reduced padding */
             padding: 0.75rem 1rem;
             border-bottom: 2px solid var(--border-color);
             position: sticky;
-            top: 0;
+            /* Stick to the top, under the banner */
+            top: 2.5rem; 
             z-index: 10;
         }
         .header-content {
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            /* UPDATED: Reduced gap */
             gap: 1.5rem; 
-            /* UPDATED: Removed max-width */
-            /* max-width: 1800px; */
             margin: 0 auto;
         }
-        /* NEW: Header Tabs */
         .header-tabs {
             display: flex;
             gap: 0.5rem;
@@ -94,28 +87,20 @@
         #auth-status {
             font-size: 0.9rem;
             color: var(--fg-gray);
-            /* NEW: Push to the right */
             margin-left: auto; 
         }
-        .connected {
-            color: var(--green) !important;
-        }
-        .disconnected {
-            color: var(--red) !important;
-        }
+        .connected { color: var(--green) !important; }
+        .disconnected { color: var(--red) !important; }
 
         /* Sections */
         .section {
             background-color: var(--bg-light);
-            /* UPDATED: Removed border */
             border: none;
             border-radius: 8px;
-            /* UPDATED: Reduced padding and margin */
             padding: 1rem;
             margin-bottom: 1rem;
         }
         h2 {
-            /* UPDATED: Reduced font size and margin */
             font-size: 1.25rem;
             font-weight: 600;
             color: var(--aqua);
@@ -125,7 +110,6 @@
             padding-bottom: 0.5rem;
         }
         h3 {
-            /* UPDATED: Reduced font size and margin */
             font-size: 1.1rem;
             font-weight: 500;
             color: var(--blue);
@@ -135,30 +119,31 @@
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            /* UPDATED: Reduced gap */
             gap: 1rem;
         }
         .grid-3 {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            /* UPDATED: Reduced gap */
             gap: 1rem;
         }
         
         /* Forms */
-        input[type="text"], input[type="password"] {
+        input[type="text"], input[type="password"], textarea {
             width: 100%;
-            /* UPDATED: Reduced padding */
             padding: 0.5rem 0.75rem;
             background-color: var(--bg-med);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             color: var(--fg);
             font-size: 1rem;
-            box-sizing: border-box; /* Important */
+            box-sizing: border-box; 
             margin-bottom: 0.5rem;
+            font-family: 'Inter', sans-serif;
         }
-        input[type="text"]:focus, input[type="password"]:focus {
+        textarea {
+            min-height: 100px;
+        }
+        input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
             outline: none;
             border-color: var(--blue);
             box-shadow: 0 0 0 2px var(--blue);
@@ -171,6 +156,11 @@
             cursor: pointer;
             font-size: 0.9rem;
             transition: opacity 0.2s;
+            /* NEW: For icon alignment */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
         }
         .btn:hover {
             opacity: 0.8;
@@ -182,28 +172,46 @@
         .btn-purple { background-color: var(--purple); color: var(--bg-dark); }
         .btn-orange { background-color: var(--orange); color: var(--bg-dark); }
         
-        .btn-group {
+        .btn-group { display: flex; gap: 0.5rem; }
+        .btn-group .btn { flex: 1; }
+        .btn-full { width: 100%; }
+
+        /* NEW: Checkbox styles for Flags */
+        .checkbox-group {
             display: flex;
+            flex-direction: column;
             gap: 0.5rem;
+            margin-bottom: 1rem;
         }
-        .btn-group .btn {
-            flex: 1;
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.9rem;
         }
-        .btn-full {
-            width: 100%;
+        .checkbox-label input {
+            margin: 0 0.5rem 0 0;
+            width: auto; /* Override default */
+            margin-bottom: 0; /* Override default */
         }
+
+        /* NEW: Student Flag Icons */
+        .flag-icon {
+            font-size: 1.1rem;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+
 
         /* Search Results */
         #search-results, #sibling-group-list {
             background-color: var(--bg-med);
             border: 1px solid var(--border-color);
             border-radius: 6px;
-            /* UPDATED: Reduced height */
             max-height: 120px;
             overflow-y: auto;
             padding: 0.25rem;
         }
-        /* NEW: Added height for admin group builder */
         #sibling-group-list, #admin-group-builder-list { min-height: 50px; }
         .search-item, .sibling-item {
             display: flex;
@@ -215,7 +223,6 @@
         .search-item:hover {
             background-color: var(--bg-light);
         }
-        /* NEW: Style for group search results */
         .search-item.group-result {
             background-color: var(--bg-dark);
             border-left: 3px solid var(--green);
@@ -229,7 +236,6 @@
         
         /* Tables */
         .table-container {
-            /* UPDATED: Increased height using viewport units */
             max-height: 65vh;
             overflow-y: auto;
             border: 1px solid var(--border-color);
@@ -241,7 +247,6 @@
         }
         th, td {
             border: 1px solid var(--border-color);
-            /* UPDATED: Reduced padding */
             padding: 6px 8px;
             text-align: left;
             font-size: 0.9rem;
@@ -256,7 +261,6 @@
         tr:nth-child(even) {
             background-color: #32302f;
         }
-        /* Highlight style */
         tr.highlighted, .highlighted {
             background-color: var(--yellow) !important;
             color: var(--bg-dark) !important;
@@ -271,17 +275,28 @@
             gap: 4px;
         }
         .action-btn {
-            padding: 4px 8px;
+            padding: 6px; /* Increased padding */
             border-radius: 4px;
             color: var(--bg-dark);
             font-size: 0.75rem;
             font-weight: 500;
             border: none;
             cursor: pointer;
+            /* NEW: Flex for icon */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* NEW: Icon styling */
+        .action-btn svg {
+            width: 14px;
+            height: 14px;
         }
         .btn-delete { background-color: var(--red); color: var(--fg); }
         .btn-highlight { background-color: var(--yellow); }
         .btn-note { background-color: var(--blue); }
+        /* NEW: Re-add button style */
+        .btn-re-add { background-color: var(--aqua); color: var(--bg-dark); }
 
         /* Sibling Group List in Table */
         .sibling-group-ul {
@@ -329,7 +344,7 @@
             color: var(--fg);
             margin-top: 0;
         }
-        #modal-error {
+        #modal-error, #modal-edit-error, #modal-note-error {
             color: var(--red);
             font-size: 0.9rem;
             display: none; /* hidden */
@@ -341,7 +356,7 @@
             margin-top: 1rem;
         }
 
-        /* NEW: Admin Roster List */
+        /* Admin Roster List */
         #admin-roster-list-container {
             background-color: var(--bg-med);
         }
@@ -358,18 +373,12 @@
             background-color: var(--bg-dark);
         }
         
-        /* Responsive - REMOVED */
-        /* @media (max-width: 900px) {
-            .grid-3 { grid-template-columns: 1fr; }
-        }
-        */
-        /* UPDATED: Roster list item actions */
         .roster-item-actions {
             display: flex;
             gap: 4px;
         }
 
-        /* NEW: Admin group builder search results */
+        /* Admin group builder search results */
         #admin-group-search-results {
             background-color: var(--bg-med);
             border: 1px solid var(--border-color);
@@ -402,27 +411,101 @@
             margin: 0.25rem 0 0 0;
         }
 
-        /* NEW: Make admin section fill height */
+        /* Make admin section fill height */
         #admin-view > .section {
-            /* 85vh = 85% of the viewport height, leaving room for the header */
             min-height: 85vh;
         }
 
+        /* NEW: Broadcast Banner */
+        #broadcast-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--yellow);
+            color: var(--bg-dark);
+            font-weight: 600;
+            padding: 0.5rem;
+            text-align: center;
+            z-index: 100;
+            display: none; /* Hidden by default */
+            box-sizing: border-box;
+            height: 2.5rem; /* Fixed height */
+        }
+
+        /* NEW: Toast / Snackbar Notifications */
+        #toast-container {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .toast {
+            padding: 0.75rem 1.25rem;
+            border-radius: 6px;
+            font-weight: 500;
+            color: var(--bg-dark);
+            opacity: 0;
+            transform: translateX(100%);
+            animation: slideIn 0.3s forwards;
+        }
+
+        /* NEW: Analytics View (REMOVED) */
+        /*
+        #analytics-view .section {
+            min-height: 85vh;
+        }
+        .stat-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card {
+            background-color: var(--bg-dark);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--purple);
+        }
+        .stat-card-title {
+            font-size: 0.9rem;
+            color: var(--fg-gray);
+            margin-bottom: 0.25rem;
+        }
+        .stat-card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--fg);
+        }
+        #pickup-chart-container {
+            background-color: var(--bg-dark);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+        */
     </style>
 </head>
 <body>
+    
+    <!-- NEW: Broadcast Banner -->
+    <div id="broadcast-banner"></div>
 
     <!-- HEADER -->
     <header>
         <div class="header-content">
             <div>
-                <h1>Doral Academy Car-Line Admin Panel</h1>
-                <p style="font-size: 0.8rem; color: var(--fg-gray); margin: -0.5rem 0 0.5rem 0;">Created and coded by Max Prebeg V3.5</p>
+                <h1 style="font-size: 1.25rem; margin: 0;">Doral Academy Car-Line Admin Panel</h1>
+                <p style="font-size: 0.8rem; color: var(--fg-gray); margin: 0.25rem 0 0 0;">Created and coded by Max Prebeg V4.0</p>
             </div>
-            <!-- NEW: Tabs -->
+            <!-- Tabs -->
             <div class="header-tabs">
                 <button id="queues-tab-btn" class="tab-btn active">Queues</button>
                 <button id="admin-tab-btn" class="tab-btn">Admin Panel</button>
+                <!-- NEW: Analytics Tab Button (REMOVED) -->
+                <!-- <button id="analytics-tab-btn" class="tab-btn">Analytics</button> -->
             </div>
             <div id="auth-status">Connecting...</div>
         </div>
@@ -431,12 +514,11 @@
     <!-- MAIN CONTENT -->
     <main class="container">
     
-        <!-- 1. QUEUES VIEW (Original content) -->
+        <!-- 1. QUEUES VIEW -->
         <div id="queues-view">
             <!-- 1. Add Student to Queue -->
             <section class="section">
                 <h2>1. Add Student to Queue</h2>
-                <!-- UPDATED: Changed to grid-3 and restructured content -->
                 <div class="grid-3">
                     <!-- Column 1: Search -->
                     <div>
@@ -534,7 +616,6 @@
             
             <!-- 3. Picked Up List -->
             <section class="section">
-                <!-- UPDATED: Removed the "Reset" button from here -->
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h2 style="color: var(--purple); margin: 0; border: none; padding: 0;">Picked Up <span id="pickedup-count">(0)</span></h2>
                 </div>
@@ -545,31 +626,52 @@
                                 <th>Name</th>
                                 <th>Grade</th>
                                 <th>Picked Up At</th>
+                                <!-- NEW: Wait Time column -->
+                                <th>Wait Time</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody id="pickedup-table-body">
-                            <tr><td colspan="4" style="text-align: center; color: var(--fg-gray);">Loading...</td></tr>
+                            <tr><td colspan="5" style="text-align: center; color: var(--fg-gray);">Loading...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </section>
         </div> <!-- END of #queues-view -->
 
-        <!-- 2. NEW ADMIN VIEW -->
+        <!-- 2. ADMIN VIEW -->
         <div id="admin-view" style="display: none;">
             <section class="section">
                 <h2>Admin Panel: Roster & Site Management</h2>
-                <!-- UPDATED: Changed to grid-3 -->
                 <div class="grid-3">
-                    <!-- Column 1: Add Student & Danger Zone -->
+                    <!-- Column 1: Add Student & Site -->
                     <div>
                         <h3>Add New Student to Roster</h3>
                         <input type="text" id="admin-first-name" placeholder="First Name">
                         <input type="text" id="admin-last-name" placeholder="Last Name">
                         <input type="text" id="admin-grade" placeholder="Grade (e.g., 5, KG)">
+                        
+                        <!-- NEW: Flags Checkboxes -->
+                        <h4 style="font-size: 1rem; color: var(--fg-gray); margin-bottom: 0.5rem; margin-top: 1rem;">Flags:</h4>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="admin-flag-allergy"> ⚠️ Allergy
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="admin-flag-assistance"> ♿ Needs Assistance
+                            </label>
+                            <!-- Add more flags here if needed -->
+                        </div>
+                        
                         <button id="admin-add-student-btn" class="btn btn-blue btn-full">Add Student</button>
                         
+                        <h3 style="margin-top: 2rem;">Site Management</h3>
+                        <input type="text" id="broadcast-input" placeholder="Broadcast message...">
+                        <div class="btn-group" style="margin-top: 0.5rem;">
+                            <button id="broadcast-save" class="btn btn-purple">Save</button>
+                            <button id="broadcast-clear" class="btn btn-gray">Clear</button>
+                        </div>
+
                         <h3 style="margin-top: 2rem; color: var(--red);">Danger Zone</h3>
                         <div style="display: flex; flex-direction: column; gap: 0.5rem;">
                             <button id="clear-all-btn" class="btn btn-red">Clear All 3 Queues</button>
@@ -585,7 +687,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- NEW: Column 3: Manage Groups -->
+                    <!-- Column 3: Manage Groups -->
                     <div>
                         <h3>Manage Permanent Groups</h3>
                         <input type="text" id="admin-group-name-input" placeholder="New Group Name (e.g., 'Smith Family')">
@@ -610,47 +712,68 @@
                 </div>
             </section>
         </div> <!-- END of #admin-view -->
-    
+        
+        <!-- 3. NEW ANALYTICS VIEW (REMOVED) -->
+        <!--
+        <div id="analytics-view" style="display: none;">
+            <section class="section">
+                <h2>Analytics Dashboard</h2>
+                
+                <div class="stat-card-grid">
+                    <div class="stat-card" style="border-left-color: var(--purple);">
+                        <div class="stat-card-title">Total Picked Up Today</div>
+                        <div id="stat-total-pickedup" class="stat-card-value">0</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: var(--aqua);">
+                        <div class="stat-card-title">Currently in Queues</div>
+                        <div id="stat-total-in-queue" class="stat-card-value">0</div>
+                    </div>
+                    <div class="stat-card" style="border-left-color: var(--yellow);">
+                        <div class="stat-card-title">Avg. Wait Time</div>
+                        <div id="stat-avg-wait-time" class="stat-card-value">--:--</div>
+                    </div>
+                </div>
+
+                <div id="pickup-chart-container">
+                    <h3>Pickups by Hour</h3>
+                    <canvas id="pickup-chart"></canvas>
+                </div>
+
+            </section>
+        </div>
+        -->
+
     </main>
     
-    <!-- PASSWORD MODAL -->
+    <!-- MODALS -->
+
+    <!-- Password Modal -->
     <div id="password-modal-backdrop" class="modal-backdrop">
         <div id="password-modal-box" class="modal-box">
             <h3>Enter Admin Password</h3>
             <p id="password-modal-prompt" style="color: var(--fg-gray); margin-bottom: 1rem;">Please enter the admin password.</p>
-            
             <input type="password" id="modal-password-input" placeholder="Password...">
             <p id="modal-error">Incorrect password.</p>
-
             <div class="modal-actions">
-                <button id="modal-cancel-btn" class="btn btn-gray">
-                    Cancel
-                </button>
-                <button id="modal-confirm-btn" class="btn btn-red">
-                    Confirm
-                </button>
+                <button id="modal-cancel-btn" class="btn btn-gray">Cancel</button>
+                <button id="modal-confirm-btn" class="btn btn-red">Confirm</button>
             </div>
         </div>
     </div>
 
-    <!-- CONFIRMATION MODAL -->
+    <!-- Confirmation Modal -->
     <div id="confirmation-modal-backdrop" class="modal-backdrop">
         <div id="confirmation-modal-box" class="modal-box">
             <h3 id="confirmation-modal-title">Confirm Action</h3>
             <p id="confirmation-modal-prompt" style="color: var(--fg-gray); margin-bottom: 1rem;">Are you sure?</p>
-            
             <div class="modal-actions">
-                <button id="confirmation-modal-cancel-btn" class="btn btn-gray">
-                    Cancel
-                </button>
-                <button id="confirmation-modal-confirm-btn" class="btn btn-red">
-                    Confirm
-                </button>
+                <button id="confirmation-modal-cancel-btn" class="btn btn-gray">Cancel</button>
+                <button id="confirmation-modal-confirm-btn" class="btn btn-red">Confirm</button>
             </div>
         </div>
     </div>
 
-    <!-- NEW: EDIT STUDENT MODAL -->
+    <!-- Edit Student Modal -->
     <div id="edit-student-modal-backdrop" class="modal-backdrop">
         <div id="edit-student-modal-box" class="modal-box">
             <h3>Edit Student</h3>
@@ -665,19 +788,72 @@
             
             <label for="modal-edit-grade">Grade</label>
             <input type="text" id="modal-edit-grade" placeholder="Grade">
+
+            <!-- NEW: Edit Flags Checkboxes -->
+            <h4 style="font-size: 1rem; color: var(--fg-gray); margin-bottom: 0.5rem; margin-top: 1rem;">Flags:</h4>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="modal-edit-flag-allergy"> ⚠️ Allergy
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="modal-edit-flag-assistance"> ♿ Needs Assistance
+                </label>
+            </div>
             
-            <p id="modal-edit-error" style="color: var(--red); font-size: 0.9rem; display: none;">All fields are required.</p>
+            <p id="modal-edit-error">All fields are required.</p>
 
             <div class="modal-actions">
-                <button id="modal-edit-cancel-btn" class="btn btn-gray">
-                    Cancel
-                </button>
-                <button id="modal-edit-save-btn" class="btn btn-blue">
-                    Save Changes
-                </button>
+                <button id="modal-edit-cancel-btn" class="btn btn-gray">Cancel</button>
+                <button id="modal-edit-save-btn" class="btn btn-blue">Save Changes</button>
             </div>
         </div>
     </div>
+
+    <!-- NEW: Note Modal (replaces prompt) -->
+    <div id="note-modal-backdrop" class="modal-backdrop">
+        <div id="note-modal-box" class="modal-box">
+            <h3>Add/Edit Note</h3>
+            
+            <input type="hidden" id="modal-note-queue">
+            <input type="hidden" id="modal-note-doc-id">
+            <input type="hidden" id="modal-note-student-index">
+            
+            <label for="modal-note-input">Note:</label>
+            <textarea id="modal-note-input" placeholder="Enter note..."></textarea>
+            <p id="modal-note-error">Could not save note.</p>
+
+            <div class="modal-actions">
+                <button id="modal-note-cancel-btn" class="btn btn-gray">Cancel</button>
+                <button id="modal-note-save-btn" class="btn btn-blue">Save Note</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NEW: Re-add Student Modal -->
+    <div id="re-add-modal-backdrop" class="modal-backdrop">
+        <div id="re-add-modal-box" class="modal-box">
+            <h3 id="re-add-modal-title">Re-add Student</h3>
+            <p style="color: var(--fg-gray); margin-bottom: 1rem;">Re-add this student to which queue?</p>
+
+            <input type="hidden" id="modal-re-add-doc-id">
+            <input type="hidden" id="modal-re-add-name">
+            <input type="hidden" id="modal-re-add-grade">
+            <input type="hidden" id="modal-re-add-roster-id">
+            
+            <div class="btn-group" style="flex-direction: column;">
+                <button id="modal-re-add-q1" class="btn btn-blue">Pre-K-5</button>
+                <button id="modal-re-add-q2" class="btn btn-green">6th-8th</button>
+                <button id="modal-re-add-q3" class="btn btn-gray">Walk</button>
+            </div>
+
+            <div class="modal-actions">
+                <button id="modal-re-add-cancel-btn" class="btn btn-gray">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- NEW: Toast Container -->
+    <div id="toast-container"></div>
 
     <!-- Firebase and App Logic -->
     <script type="module">
@@ -699,6 +875,7 @@
             getDocs,
             getDoc,
             updateDoc,
+            setDoc, // NEW: For broadcast
             serverTimestamp,
             setLogLevel
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
@@ -718,11 +895,13 @@
         // --- DOM Elements ---
         const authStatus = document.getElementById('auth-status');
         
-        // NEW: View Toggling
+        // View Toggling
         const queuesTabBtn = document.getElementById('queues-tab-btn');
         const adminTabBtn = document.getElementById('admin-tab-btn');
+        // const analyticsTabBtn = document.getElementById('analytics-tab-btn'); // REMOVED
         const queuesView = document.getElementById('queues-view');
         const adminView = document.getElementById('admin-view');
+        // const analyticsView = document.getElementById('analytics-view'); // REMOVED
 
         // Add Student Section
         const searchInput = document.getElementById('search-input');
@@ -742,20 +921,23 @@
         const q2Count = document.getElementById('q2-count');
         const q3Count = document.getElementById('q3-count');
 
-        // Picked Up DOM Elements
+        // Picked Up
         const pickedUpTableBody = document.getElementById('pickedup-table-body');
         const pickedUpCount = document.getElementById('pickedup-count');
         
-        // NEW: Admin Panel DOM
+        // Admin Panel
         const adminRosterList = document.getElementById('admin-roster-list');
         const adminAddStudentBtn = document.getElementById('admin-add-student-btn');
         const adminFirstName = document.getElementById('admin-first-name');
         const adminLastName = document.getElementById('admin-last-name');
         const adminGrade = document.getElementById('admin-grade');
-        const clearAllBtn = document.getElementById('clear-all-btn'); // New button
-        const clearPickedUpBtn = document.getElementById('clear-pickedup-btn'); // Moved button
-
-        // NEW: Admin Group Management DOM
+        const clearAllBtn = document.getElementById('clear-all-btn');
+        const clearPickedUpBtn = document.getElementById('clear-pickedup-btn');
+        // NEW: Admin Flags
+        const adminFlagAllergy = document.getElementById('admin-flag-allergy');
+        const adminFlagAssistance = document.getElementById('admin-flag-assistance');
+        
+        // Admin Group Management
         const adminGroupNameInput = document.getElementById('admin-group-name-input');
         const adminGroupSearchInput = document.getElementById('admin-group-search-input');
         const adminGroupSearchResults = document.getElementById('admin-group-search-results');
@@ -763,7 +945,7 @@
         const adminSaveGroupBtn = document.getElementById('admin-save-group-btn');
         const adminPermanentGroupList = document.getElementById('admin-permanent-group-list');
 
-        // NEW: Edit Student Modal DOM
+        // Edit Student Modal
         const editStudentModalBackdrop = document.getElementById('edit-student-modal-backdrop');
         const modalEditStudentId = document.getElementById('modal-edit-student-id');
         const modalEditFirstName = document.getElementById('modal-edit-first-name');
@@ -772,33 +954,78 @@
         const modalEditError = document.getElementById('modal-edit-error');
         const modalEditCancelBtn = document.getElementById('modal-edit-cancel-btn');
         const modalEditSaveBtn = document.getElementById('modal-edit-save-btn');
+        // NEW: Edit Flags
+        const modalEditFlagAllergy = document.getElementById('modal-edit-flag-allergy');
+        const modalEditFlagAssistance = document.getElementById('modal-edit-flag-assistance');
 
-        // Modals
+        // Note Modal (NEW)
+        const noteModalBackdrop = document.getElementById('note-modal-backdrop');
+        const modalNoteQueue = document.getElementById('modal-note-queue');
+        const modalNoteDocId = document.getElementById('modal-note-doc-id');
+        const modalNoteStudentIndex = document.getElementById('modal-note-student-index');
+        const modalNoteInput = document.getElementById('modal-note-input');
+        const modalNoteError = document.getElementById('modal-note-error');
+        const modalNoteCancelBtn = document.getElementById('modal-note-cancel-btn');
+        const modalNoteSaveBtn = document.getElementById('modal-note-save-btn');
+        
+        // Re-add Modal (NEW)
+        const reAddModalBackdrop = document.getElementById('re-add-modal-backdrop');
+        const reAddModalTitle = document.getElementById('re-add-modal-title');
+        const modalReAddDocId = document.getElementById('modal-re-add-doc-id');
+        const modalReAddName = document.getElementById('modal-re-add-name');
+        const modalReAddGrade = document.getElementById('modal-re-add-grade');
+        const modalReAddRosterId = document.getElementById('modal-re-add-roster-id');
+        const modalReAddQ1 = document.getElementById('modal-re-add-q1');
+        const modalReAddQ2 = document.getElementById('modal-re-add-q2');
+        const modalReAddQ3 = document.getElementById('modal-re-add-q3');
+        const modalReAddCancelBtn = document.getElementById('modal-re-add-cancel-btn');
+
+        // Modals (Password, Confirmation)
         const passwordModalBackdrop = document.getElementById('password-modal-backdrop');
         const passwordModalPrompt = document.getElementById('password-modal-prompt');
         const modalCancelBtn = document.getElementById('modal-cancel-btn');
         const modalConfirmBtn = document.getElementById('modal-confirm-btn');
         const modalPasswordInput = document.getElementById('modal-password-input');
         const modalError = document.getElementById('modal-error');
-        
         const confirmationModalBackdrop = document.getElementById('confirmation-modal-backdrop');
         const confirmationModalTitle = document.getElementById('confirmation-modal-title');
         const confirmationModalPrompt = document.getElementById('confirmation-modal-prompt');
         const confirmationModalCancelBtn = document.getElementById('confirmation-modal-cancel-btn');
         const confirmationModalConfirmBtn = document.getElementById('confirmation-modal-confirm-btn');
 
+        // NEW: Site Management
+        const broadcastBanner = document.getElementById('broadcast-banner');
+        const broadcastInput = document.getElementById('broadcast-input');
+        const broadcastSave = document.getElementById('broadcast-save');
+        const broadcastClear = document.getElementById('broadcast-clear');
+        const toastContainer = document.getElementById('toast-container');
+        
+        // NEW: Analytics (REMOVED)
+        /*
+        const statTotalPickedup = document.getElementById('stat-total-pickedup');
+        const statTotalInQueue = document.getElementById('stat-total-in-queue');
+        const statAvgWaitTime = document.getElementById('stat-avg-wait-time');
+        const pickupChartCanvas = document.getElementById('pickup-chart').getContext('2d');
+        let pickupChart = null; // Chart.js instance
+        */
+
         // --- App State ---
         let passwordModalAction = null; 
         let confirmationModalAction = null;
         let stagedSiblingGroup = []; 
+        let stagedForGroupBuilding = [];
+        // NEW: Local state for data
         let currentRoster = []; 
-        let stagedForGroupBuilding = []; // NEW: For admin group builder
-        let currentPermanentGroups = []; // NEW: To hold permanent groups
+        let currentPermanentGroups = [];
+        let currentQ1 = [];
+        let currentQ2 = [];
+        let currentQ3 = [];
+        let currentPickedUpList = [];
         
         // --- Firebase Globals ---
         let app, auth, db, userId;
         let q1ColRef, q2ColRef, q3ColRef, rosterColRef, pickedupColRef;
-        let permanentGroupsColRef; // NEW
+        let permanentGroupsColRef, broadcastDocRef;
         const appId = firebaseConfig.projectId || 'default-carline-app';
 
         // --- Collection Names ---
@@ -807,7 +1034,19 @@
         const Q3_COLLECTION = 'queue_walkers';
         const PICKEDUP_COLLECTION = 'queue_pickedup';
         const ROSTER_COLLECTION = 'ROSTER';
-        const PERMANENT_GROUPS_COLLECTION = 'permanent_groups'; // NEW
+        const PERMANENT_GROUPS_COLLECTION = 'permanent_groups';
+        const CONFIG_COLLECTION = 'site_config'; // NEW
+        const BROADCAST_DOC = 'broadcast'; // NEW
+
+        // --- NEW: SVG Icons ---
+        const icons = {
+            star: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.846 5.673a1 1 0 00.95.69h5.969c.969 0 1.371 1.24.588 1.81l-4.83 3.51a1 1 0 00-.364 1.118l1.846 5.673c.3.921-.755 1.688-1.54 1.118l-4.83-3.51a1 1 0 00-1.175 0l-4.83 3.51c-.784.57-1.838-.197-1.54-1.118l1.846-5.673a1 1 0 00-.364-1.118L2.14 11.099c-.783-.57-.38-1.81.588-1.81h5.97a1 1 0 00.95-.69L11.049 2.927z"></path></svg>`,
+            pencil: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>`,
+            trash: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>`,
+            edit: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536l12.232-12.232z"></path></svg>`,
+            remove: `<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`,
+            reAdd: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-4 4v6m0-6V7m0 0h.01M12 7h.01M12 7V3l-3 4m3-4l3 4"></path></svg>`
+        };
 
         // --- Utility Functions ---
         
@@ -818,10 +1057,27 @@
         }
         
         function sanitize(str) {
-            if (!str) return "";
+            if (typeof str !== 'string') return "";
             const temp = document.createElement('div');
             temp.textContent = str;
             return temp.innerHTML;
+        }
+
+        /**
+         * NEW: Displays a toast notification.
+         * @param {string} message - The message to display.
+         * @param {boolean} [isError=false] - True for error (red), false for success (green).
+         */
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${isError ? 'error' : 'success'}`;
+            toast.textContent = sanitize(message);
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
         // --- Render Functions ---
@@ -829,10 +1085,8 @@
         function renderSearchResults(students, groups) {
             let html = '';
 
-            // Render groups first
             if (groups.length > 0) {
-                html += groups.map(group => {
-                    return `
+                html += groups.map(group => `
                     <div class="search-item group-result">
                         <div>
                             <span style="font-weight: 500;">${sanitize(group.groupName)}</span>
@@ -842,11 +1096,9 @@
                             <button class="btn btn-green" data-action="add-permanent-group" data-group-id="${group.id}">Add to Sibling Queue</button>
                         </div>
                     </div>
-                    `;
-                }).join('');
+                `).join('');
             }
 
-            // Render individual students
             if (students.length > 0) {
                 html += students.map(student => {
                     const fullName = `${student.firstName} ${student.lastName}`;
@@ -857,10 +1109,10 @@
                             <span style="color: var(--fg-gray); font-size: 0.8rem; margin-left: 4px;">(Gr: ${student.grade})</span>
                         </div>
                         <div class="search-item-actions">
-                            <button class="btn btn-blue" data-queue="1" data-name="${fullName}" data-grade="${student.grade}">K-5</button>
-                            <button class="btn btn-green" data-queue="2" data-name="${fullName}" data-grade="${student.grade}">6-8</button>
-                            <button class="btn btn-gray" data-queue="3" data-name="${fullName}" data-grade="${student.grade}">Walk</button>
-                            <button class="btn btn-purple" data-action="stage-group" data-name="${fullName}" data-grade="${student.grade}">Group</button>
+                            <button class="btn btn-blue" data-queue="1" data-name="${fullName}" data-grade="${student.grade}" data-roster-id="${student.id}">K-5</button>
+                            <button class="btn btn-green" data-queue="2" data-name="${fullName}" data-grade="${student.grade}" data-roster-id="${student.id}">6-8</button>
+                            <button class="btn btn-gray" data-queue="3" data-name="${fullName}" data-grade="${student.grade}" data-roster-id="${student.id}">Walk</button>
+                            <button class="btn btn-purple" data-action="stage-group" data-name="${fullName}" data-grade="${student.grade}" data-roster-id="${student.id}">Group</button>
                         </div>
                     </div>
                     `;
@@ -871,7 +1123,6 @@
                 searchResults.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">No students or groups found.</p>`;
                 return;
             }
-            
             searchResults.innerHTML = html;
         }
 
@@ -880,19 +1131,16 @@
                 stagedList.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">No students staged.</p>`;
                 return;
             }
-            stagedList.innerHTML = stagedSiblingGroup.map((student, index) => {
-                return `
+            stagedList.innerHTML = stagedSiblingGroup.map((student, index) => `
                 <div class="sibling-item">
-                    <span style="font-weight: 500;">${student.name} (Gr: ${student.grade})</span>
+                    <span style="font-weight: 500;">${sanitize(student.name)} (Gr: ${sanitize(student.grade)})</span>
                     <button class="remove-staged-btn" data-index="${index}" title="Remove" style="background: none; border: none; color: var(--red); cursor: pointer;">
-                        <svg class="w-4 h-4" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        ${icons.remove}
                     </button>
                 </div>
-                `;
-            }).join('');
+            `).join('');
         }
         
-        // NEW: Render for admin group builder
         function renderGroupBuilderList() {
             if (stagedForGroupBuilding.length === 0) {
                 adminGroupBuilderList.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">No students staged for group.</p>`;
@@ -902,16 +1150,33 @@
                 const fullName = `${student.firstName} ${student.lastName}`;
                 return `
                 <div class="sibling-item">
-                    <span style="font-weight: 500;">${fullName} (Gr: ${student.grade})</span>
+                    <span style="font-weight: 500;">${sanitize(fullName)} (Gr: ${sanitize(student.grade)})</span>
                     <button class="remove-staged-builder-btn" data-index="${index}" title="Remove" style="background: none; border: none; color: var(--red); cursor: pointer;">
-                        <svg class="w-4 h-4" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        ${icons.remove}
                     </button>
                 </div>
                 `;
             }).join('');
         }
 
+        // NEW: Renders flag icons
+        function renderFlagIcons(flags) {
+            if (!flags) return '';
+            let iconsHtml = '';
+            if (flags.allergy) {
+                iconsHtml += `<span class="flag-icon" title="Allergy">⚠️</span>`;
+            }
+            if (flags.assistance) {
+                iconsHtml += `<span class="flag-icon" title="Needs Assistance">♿</span>`;
+            }
+            return iconsHtml;
+        }
+
         function renderQueueTable(tableBodyEl, countEl, queueName, docs) {
+            // currentQ1 = docs; // Store for analytics (REMOVED)
+            if (queueName === Q1_COLLECTION) currentQ1 = docs;
+            else if (queueName === Q3_COLLECTION) currentQ3 = docs;
+
             docs.sort((a, b) => (a.addedAt?.seconds || 0) - (b.addedAt?.seconds || 0));
             countEl.textContent = `(${docs.length})`;
             
@@ -924,26 +1189,21 @@
                 const highlightClass = student.isHighlighted ? 'highlighted' : '';
                 return `
                 <tr class="${highlightClass}">
-                    <td>${sanitize(student.name)} (${sanitize(student.grade)})</td>
+                    <td>${sanitize(student.name)} (${sanitize(student.grade)})${renderFlagIcons(student.flags)}</td>
                     <td>${sanitize(student.note)}</td>
                     <td class="actions-cell">
-                        <button class="action-btn btn-highlight" 
-                                data-action="highlight" 
-                                data-id="${student.id}"
-                                data-queue="${queueName}">
-                            H
+                        <button class="action-btn btn-highlight" title="Highlight"
+                                data-action="highlight" data-id="${student.id}" data-queue="${queueName}">
+                            ${icons.star}
                         </button>
-                        <button class="action-btn btn-note" 
-                                data-action="add-note" 
-                                data-id="${student.id}"
-                                data-queue="${queueName}">
-                            Note
+                        <button class="action-btn btn-note" title="Note"
+                                data-action="add-note" data-id="${student.id}" data-queue="${queueName}"
+                                data-current-note="${sanitize(student.note)}">
+                            ${icons.pencil}
                         </button>
-                        <button class="action-btn btn-delete" 
-                                data-action="dismiss-queue" 
-                                data-id="${student.id}"
-                                data-queue="${queueName}">
-                            Dismiss
+                        <button class="action-btn btn-delete" title="Dismiss"
+                                data-action="dismiss-queue" data-id="${student.id}" data-queue="${queueName}">
+                            ${icons.trash}
                         </button>
                     </td>
                 </tr>
@@ -952,11 +1212,10 @@
         }
 
         function renderSiblingTable(docs) {
+            currentQ2 = docs; // Store for analytics
             docs.sort((a, b) => (a.addedAt?.seconds || 0) - (b.addedAt?.seconds || 0));
             
-            let studentCount = docs.reduce((count, doc) => {
-                return count + (doc.isGroup ? doc.students.length : 1);
-            }, 0);
+            let studentCount = docs.reduce((count, doc) => count + (doc.isGroup ? doc.students.length : 1), 0);
             q2Count.textContent = `(${studentCount})`;
             
             if (docs.length === 0) {
@@ -972,28 +1231,20 @@
                                       const highlightClass = s.isHighlighted ? 'highlighted' : '';
                                       const noteHtml = s.note ? ` <i style="color: var(--blue); font-size: 0.8rem;">(${sanitize(s.note)})</i>` : '';
                                       return `<li class="${highlightClass}">
-                                          <span>${sanitize(s.name)} (${sanitize(s.grade)})${noteHtml}</span>
+                                          <span>${sanitize(s.name)} (${sanitize(s.grade)})${renderFlagIcons(s.flags)}${noteHtml}</span>
                                           <span class="actions-cell">
-                                              <button class="action-btn btn-highlight" 
-                                                      data-action="highlight-group-student"
-                                                      data-id="${student.id}"
-                                                      data-queue="${Q2_COLLECTION}"
-                                                      data-index="${index}">
-                                                  H
+                                              <button class="action-btn btn-highlight" title="Highlight Student"
+                                                      data-action="highlight-group-student" data-id="${student.id}" data-queue="${Q2_COLLECTION}" data-index="${index}">
+                                                  ${icons.star}
                                               </button>
-                                              <button class="action-btn btn-note" 
-                                                      data-action="add-note-group"
-                                                      data-id="${student.id}"
-                                                      data-queue="${Q2_COLLECTION}"
-                                                      data-index="${index}">
-                                                  Note
+                                              <button class="action-btn btn-note" title="Note Student"
+                                                      data-action="add-note-group" data-id="${student.id}" data-queue="${Q2_COLLECTION}" data-index="${index}"
+                                                      data-current-note="${sanitize(s.note)}">
+                                                  ${icons.pencil}
                                               </button>
-                                              <button class="action-btn btn-delete" 
-                                                      data-action="dismiss-group-student"
-                                                      data-id="${student.id}"
-                                                      data-queue="${Q2_COLLECTION}"
-                                                      data-index="${index}">
-                                                  X
+                                              <button class="action-btn btn-delete" title="Dismiss Student"
+                                                      data-action="dismiss-group-student" data-id="${student.id}" data-queue="${Q2_COLLECTION}" data-index="${index}">
+                                                  ${icons.remove}
                                               </button>
                                           </span>
                                         </li>`;
@@ -1002,7 +1253,7 @@
                 } else {
                     const highlightClass = student.isHighlighted ? 'highlighted' : '';
                     const noteHtml = student.note ? ` <i style="color: var(--blue); font-size: 0.8rem;">(${sanitize(student.note)})</i>` : '';
-                    studentHtml = `<span class="${highlightClass}">${sanitize(student.name)} (${sanitize(student.grade)})${noteHtml}</span>`;
+                    studentHtml = `<span class="${highlightClass}">${sanitize(student.name)} (${sanitize(student.grade)})${renderFlagIcons(student.flags)}${noteHtml}</span>`;
                 }
                 
                 return `
@@ -1010,25 +1261,20 @@
                     <td>${studentHtml}</td>
                     <td class="actions-cell">
                         ${!student.isGroup ? `
-                        <button class="action-btn btn-highlight" 
-                                data-action="highlight" 
-                                data-id="${student.id}"
-                                data-queue="${Q2_COLLECTION}">
-                            H
+                        <button class="action-btn btn-highlight" title="Highlight"
+                                data-action="highlight" data-id="${student.id}" data-queue="${Q2_COLLECTION}">
+                            ${icons.star}
                         </button>
-                        <button class="action-btn btn-note" 
-                                data-action="add-note" 
-                                data-id="${student.id}"
-                                data-queue="${Q2_COLLECTION}">
-                            Note
+                        <button class="action-btn btn-note" title="Note"
+                                data-action="add-note" data-id="${student.id}" data-queue="${Q2_COLLECTION}"
+                                data-current-note="${sanitize(student.note)}">
+                            ${icons.pencil}
                         </button>
                         ` : ''}
                         <button class="action-btn btn-delete" 
-                                data-action="dismiss-queue" 
-                                data-id="${student.id}"
-                                data-queue="${Q2_COLLECTION}"
+                                data-action="dismiss-queue" data-id="${student.id}" data-queue="${Q2_COLLECTION}"
                                 title="Dismiss Entire Group/Student">
-                            Dismiss All
+                            ${icons.trash}
                         </button>
                     </td>
                 </tr>
@@ -1036,12 +1282,31 @@
             }).join('');
         }
 
+        // NEW: Calculate wait time string
+        function calculateWaitTime(addedAt, pickedUpAt) {
+            if (!addedAt || !pickedUpAt) return '--:--';
+            try {
+                const added = addedAt.toDate();
+                const pickedUp = pickedUpAt.toDate();
+                const diffMs = pickedUp.getTime() - added.getTime();
+                if (diffMs < 0) return 'Error';
+
+                const diffMins = Math.floor(diffMs / 60000);
+                const diffSecs = Math.floor((diffMs % 60000) / 1000);
+                
+                return `${diffMins.toString().padStart(2, '0')}:${diffSecs.toString().padStart(2, '0')}`;
+            } catch (e) {
+                return '--:--';
+            }
+        }
+
         function renderPickedUpTable(docs) {
+            currentPickedUpList = docs; // Store for analytics
             docs.sort((a, b) => (b.pickedUpAt?.seconds || 0) - (a.pickedUpAt?.seconds || 0));
             pickedUpCount.textContent = `(${docs.length})`;
             
             if (docs.length === 0) {
-                pickedUpTableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: var(--fg-gray);">No students picked up.</td></tr>`;
+                pickedUpTableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--fg-gray);">No students picked up.</td></tr>`;
                 return;
             }
             
@@ -1051,12 +1316,22 @@
                     <td>${sanitize(student.name)}</td>
                     <td>${sanitize(student.grade)}</td>
                     <td>${formatTimestamp(student.pickedUpAt)}</td>
-                    <td>
-                        <button class="action-btn btn-delete" 
+                    <td>${calculateWaitTime(student.addedAt, student.pickedUpAt)}</td>
+                    <td class="actions-cell">
+                        <!-- NEW: Re-add Button -->
+                        <button class="action-btn btn-re-add" title="Re-add to Queue"
+                                data-action="re-add"
+                                data-id="${student.id}"
+                                data-name="${sanitize(student.name)}"
+                                data-grade="${sanitize(student.grade)}"
+                                data-roster-id="${student.rosterId || ''}">
+                            ${icons.reAdd}
+                        </button>
+                        <button class="action-btn btn-delete" title="Remove Permanently"
                                 data-action="remove-pickedup" 
                                 data-id="${student.id}"
                                 data-name="${sanitize(student.name)}">
-                            Remove
+                            ${icons.trash}
                         </button>
                     </td>
                 </tr>
@@ -1064,44 +1339,36 @@
             }).join('');
         }
         
-        /**
-         * NEW: Renders the Admin Roster Management list.
-         * @param {Array} roster - Array of student objects from the 'ROSTER' collection.
-         */
         function renderAdminRoster(roster) {
             if (roster.length === 0) {
                 adminRosterList.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">Roster is empty.</p>`;
                 return;
             }
-            adminRosterList.innerHTML = roster.map(student => {
-                return `
+            adminRosterList.innerHTML = roster.map(student => `
                 <div class="roster-item">
                     <div>
                         <span style="font-weight: 500;">${sanitize(student.firstName)} ${sanitize(student.lastName)}</span>
                         <span style="color: var(--fg-gray); font-size: 0.8rem; margin-left: 4px;">(Gr: ${student.grade})</span>
+                        ${renderFlagIcons(student.flags)}
                     </div>
                     <div class="roster-item-actions">
-                        <!-- NEW: Edit Button -->
-                        <button class="action-btn btn-blue" data-action="edit-roster-student" data-id="${student.id}">
-                            Edit
+                        <button class="action-btn btn-blue" title="Edit" data-action="edit-roster-student" data-id="${student.id}">
+                            ${icons.edit}
                         </button>
-                        <button class="action-btn btn-delete" data-action="delete-roster-student" data-id="${student.id}">
-                            Delete
+                        <button class="action-btn btn-delete" title="Delete" data-action="delete-roster-student" data-id="${student.id}">
+                            ${icons.trash}
                         </button>
                     </div>
                 </div>
-                `;
-            }).join('');
+            `).join('');
         }
 
-        // NEW: Render the list of permanent groups in admin panel
         function renderPermanentGroups(groups) {
             if (groups.length === 0) {
                 adminPermanentGroupList.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">No permanent groups found.</p>`;
                 return;
             }
             adminPermanentGroupList.innerHTML = groups.map(group => {
-                // Find student names from currentRoster
                 const studentNames = group.students.map(studentId => {
                     const student = currentRoster.find(s => s.id === studentId);
                     return student ? `${student.firstName} ${student.lastName}` : 'Unknown Student';
@@ -1115,47 +1382,181 @@
                             ${studentNames.map(name => `<li>${sanitize(name)}</li>`).join('')}
                         </ul>
                     </div>
-                    <button class="action-btn btn-delete" data-action="delete-permanent-group" data-id="${group.id}">
-                        Delete
+                    <button class="action-btn btn-delete" title="Delete Group" data-action="delete-permanent-group" data-id="${group.id}">
+                        ${icons.trash}
                     </button>
                 </div>
                 `;
             }).join('');
         }
+        
+        /**
+         * NEW: Renders the analytics tab. (REMOVED)
+         */
+        /*
+        function renderAnalytics() {
+            // 1. Calculate Stats
+            const totalPickedUp = currentPickedUpList.length;
+            const totalInQ1 = currentQ1.length;
+            const totalInQ2 = currentQ2.reduce((count, doc) => count + (doc.isGroup ? doc.students.length : 1), 0);
+            const totalInQ3 = currentQ3.length; // Assuming q3 docs are stored
+            const totalInQueue = totalInQ1 + totalInQ2 + totalInQ3;
+
+            // Calculate Avg Wait Time
+            let totalWaitSeconds = 0;
+            let waitedStudents = 0;
+            currentPickedUpList.forEach(doc => {
+                if (doc.addedAt && doc.pickedUpAt) {
+                    try {
+                        const added = doc.addedAt.toDate();
+                        const pickedUp = doc.pickedUpAt.toDate();
+                        const diffSecs = (pickedUp.getTime() - added.getTime()) / 1000;
+                        if (diffSecs > 0) {
+                            totalWaitSeconds += diffSecs;
+                            waitedStudents++;
+                        }
+                    } catch(e) {}
+                }
+            });
+            
+            const avgWaitSeconds = waitedStudents > 0 ? totalWaitSeconds / waitedStudents : 0;
+            const avgWaitMins = Math.floor(avgWaitSeconds / 60);
+            const avgWaitSecs = Math.floor(avgWaitSeconds % 60);
+            const avgWaitString = waitedStudents > 0 ? `${avgWaitMins.toString().padStart(2, '0')}:${avgWaitSecs.toString().padStart(2, '0')}` : '--:--';
+
+            // 2. Update DOM
+            statTotalPickedup.textContent = totalPickedUp;
+            statTotalInQueue.textContent = totalInQueue;
+            statAvgWaitTime.textContent = avgWaitString;
+
+            // 3. Render Chart
+            const pickupsByHour = {}; // 0-23
+            for (let i = 0; i < 24; i++) { pickupsByHour[i] = 0; }
+
+            currentPickedUpList.forEach(doc => {
+                if (doc.pickedUpAt) {
+                    try {
+                        const hour = doc.pickedUpAt.toDate().getHours();
+                        pickupsByHour[hour]++;
+                    } catch(e) {}
+                }
+            });
+
+            const chartLabels = Object.keys(pickupsByHour).map(h => `${h}:00`);
+            const chartData = Object.values(pickupsByHour);
+
+            // Filter data to only show hours with activity (or typical school hours)
+            // Let's filter for 6 AM to 8 PM (6 to 20)
+            const activeLabels = chartLabels.slice(6, 21);
+            const activeData = chartData.slice(6, 21);
+
+
+            if (pickupChart) {
+                pickupChart.destroy();
+            }
+            pickupChart = new Chart(pickupChartCanvas, {
+                type: 'bar',
+                data: {
+                    labels: activeLabels,
+                    datasets: [{
+                        label: 'Pickups',
+                        data: activeData,
+                        backgroundColor: 'rgba(131, 165, 152, 0.6)', // var(--blue)
+                        borderColor: 'rgba(131, 165, 152, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'var(--fg-gray)',
+                                stepSize: 1
+                            },
+                            grid: {
+                                color: 'var(--border-color)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'var(--fg-gray)'
+                            },
+                            grid: {
+                                color: 'var(--border-color)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+        */
 
 
         // --- Firebase Actions ---
 
-        async function addStudentToQueue(queueNum, name, grade) {
+        async function addStudentToQueue(queueNum, name, grade, rosterId = null) {
             let collection;
             if (queueNum == 1) collection = q1ColRef;
             else if (queueNum == 2) collection = q2ColRef;
             else if (queueNum == 3) collection = q3ColRef;
             else return;
 
+            // NEW: Get flags from roster if rosterId is provided
+            let flags = {};
+            if (rosterId) {
+                const student = currentRoster.find(s => s.id === rosterId);
+                if (student && student.flags) {
+                    flags = student.flags;
+                }
+            }
+
             try {
                 await addDoc(collection, {
                     name: name,
                     grade: grade,
+                    rosterId: rosterId || null,
+                    flags: flags, // NEW
                     addedAt: serverTimestamp(),
                     addedBy: userId,
                     isHighlighted: false,
                     note: ""
                 });
+                showToast(`${name} added to queue.`, false);
             } catch (error) {
                 console.error("Error adding student: ", error);
+                showToast(`Error adding ${name}: ${error.message}`, true);
             }
         }
 
         async function addGroupToQueue(studentGroup) {
             if (studentGroup.length === 0) return;
 
-            const studentsForFirestore = studentGroup.map(student => ({
-                name: student.name,
-                grade: student.grade,
-                isHighlighted: false,
-                note: ""
-            }));
+            const studentsForFirestore = studentGroup.map(student => {
+                // NEW: Get flags for each student in group
+                let flags = {};
+                if (student.rosterId) {
+                    const rosterStudent = currentRoster.find(s => s.id === student.rosterId);
+                    if (rosterStudent && rosterStudent.flags) {
+                        flags = rosterStudent.flags;
+                    }
+                }
+                return {
+                    name: student.name,
+                    grade: student.grade,
+                    rosterId: student.rosterId || null,
+                    flags: flags,
+                    isHighlighted: false,
+                    note: ""
+                };
+            });
 
             try {
                 await addDoc(q2ColRef, {
@@ -1167,35 +1568,41 @@
                 
                 stagedSiblingGroup = [];
                 renderStagedGroup();
+                showToast(`Group added to queue.`, false);
             } catch (error) {
                 console.error("Error adding group to queue: ", error);
+                showToast(`Error adding group: ${error.message}`, true);
             }
         }
 
-        // NEW: Add group from permanent group definition
         async function addPermanentGroupToQueue(groupId) {
             const group = currentPermanentGroups.find(g => g.id === groupId);
             if (!group) return;
 
-            // Map student IDs to student objects from the roster
             const studentGroup = group.students.map(studentId => {
                 const student = currentRoster.find(s => s.id === studentId);
                 if (!student) return null;
                 return {
                     name: `${student.firstName} ${student.lastName}`,
-                    grade: student.grade
+                    grade: student.grade,
+                    rosterId: student.id,
+                    flags: student.flags || {} // NEW: Pass flags
                 };
-            }).filter(s => s !== null); // Filter out any nulls if a student was deleted
+            }).filter(s => s !== null);
 
             if (studentGroup.length > 0) {
-                // Use the existing addGroupToQueue function, but pass the resolved student data
-                // This re-uses the logic for creating the group in queue_siblings
-                 await addDoc(q2ColRef, {
-                    isGroup: true,
-                    students: studentGroup.map(s => ({ ...s, isHighlighted: false, note: "" })),
-                    addedAt: serverTimestamp(),
-                    addedBy: userId
-                });
+                 try {
+                    await addDoc(q2ColRef, {
+                        isGroup: true,
+                        students: studentGroup.map(s => ({ ...s, isHighlighted: false, note: "" })),
+                        addedAt: serverTimestamp(),
+                        addedBy: userId
+                    });
+                    showToast(`${group.groupName} added to queue.`, false);
+                } catch(error) {
+                    console.error("Error adding permanent group to queue: ", error);
+                    showToast(`Error adding group: ${error.message}`, true);
+                }
             }
         }
 
@@ -1212,6 +1619,8 @@
                             return addDoc(pickedupColRef, {
                                 name: student.name,
                                 grade: student.grade,
+                                rosterId: student.rosterId || null,
+                                addedAt: studentData.addedAt || null, // NEW: Pass addedAt
                                 pickedUpAt: serverTimestamp(),
                                 addedBy: userId
                             });
@@ -1221,14 +1630,18 @@
                         await addDoc(pickedupColRef, {
                             name: studentData.name,
                             grade: studentData.grade,
+                            rosterId: studentData.rosterId || null,
+                            addedAt: studentData.addedAt || null, // NEW: Pass addedAt
                             pickedUpAt: serverTimestamp(),
                             addedBy: userId
                         });
                     }
                     await deleteDoc(docRef);
+                    showToast(`Dismissed entry.`, false);
                 }
             } catch (error) {
                 console.error("Error dismissing student: ", error);
+                showToast(`Error dismissing: ${error.message}`, true);
             }
         }
 
@@ -1238,8 +1651,9 @@
                 const studentDoc = await getDoc(docRef);
 
                 if (!studentDoc.exists()) return;
-
-                let students = studentDoc.data().students;
+                
+                const groupData = studentDoc.data();
+                let students = groupData.students;
                 const studentToDismiss = students[studentIndex];
 
                 if (!studentToDismiss) return;
@@ -1247,6 +1661,8 @@
                 await addDoc(pickedupColRef, {
                     name: studentToDismiss.name,
                     grade: studentToDismiss.grade,
+                    rosterId: studentToDismiss.rosterId || null,
+                    addedAt: groupData.addedAt || null, // NEW: Pass group's addedAt
                     pickedUpAt: serverTimestamp(),
                     addedBy: userId
                 });
@@ -1258,8 +1674,10 @@
                 } else {
                     await updateDoc(docRef, { students: students });
                 }
+                showToast(`Dismissed ${studentToDismiss.name}.`, false);
             } catch (error) {
                 console.error("Error dismissing group student: ", error);
+                showToast(`Error dismissing student: ${error.message}`, true);
             }
         }
 
@@ -1268,16 +1686,14 @@
                 const snapshot = await getDocs(pickedupColRef);
                 const deletePromises = snapshot.docs.map(doc => deleteDoc(doc.ref));
                 await Promise.all(deletePromises);
+                showToast(`"Picked Up" list cleared.`, false);
             } catch (error) {
                 console.error("Error clearing picked up list: ", error);
+                showToast(`Error clearing list: ${error.message}`, true);
             }
         }
         
-        /**
-         * NEW: Clears all documents from all three queues.
-         */
         async function clearAllQueues() {
-            console.log("Clearing all queues...");
             const collectionsToClear = [q1ColRef, q2ColRef, q3ColRef];
             try {
                 const deletePromises = [];
@@ -1288,9 +1704,11 @@
                     });
                 }
                 await Promise.all(deletePromises);
-                console.log("All queues cleared.");
-            } catch (error) {
+                showToast(`All queues cleared.`, false);
+            } catch (error)
+            {
                 console.error("Error clearing all queues: ", error);
+                showToast(`Error clearing queues: ${error.message}`, true);
             }
         }
 
@@ -1298,8 +1716,10 @@
             try {
                 const docRef = doc(db, pickedupColRef.path, docId);
                 await deleteDoc(docRef);
+                showToast(`Removed student from "Picked Up".`, false);
             } catch (error) {
                 console.error("Error removing picked up student: ", error);
+                showToast(`Error removing student: ${error.message}`, true);
             }
         }
         
@@ -1313,6 +1733,7 @@
                 }
             } catch (error) {
                 console.error("Error toggling highlight: ", error);
+                showToast(`Highlight error: ${error.message}`, true);
             }
         }
 
@@ -1324,129 +1745,138 @@
                 if (studentDoc.exists()) {
                     const studentData = studentDoc.data();
                     const students = studentData.students;
-                    
                     if (students && students[studentIndex]) {
                         students[studentIndex].isHighlighted = !students[studentIndex].isHighlighted;
                     }
-                    
                     await updateDoc(docRef, { students: students });
                 }
             } catch (error) {
                 console.error("Error toggling group student highlight: ", error);
+                showToast(`Highlight error: ${error.message}`, true);
             }
         }
         
-        async function updateStudentNote(queueName, docId, studentIndex, currentNote) {
-            const newNote = prompt("Enter note (or leave blank to clear):", currentNote);
-            
-            if (newNote === null) {
+        // NEW: Replaced prompt with Modal
+        function openNoteModal(queue, docId, studentIndex, currentNote) {
+            modalNoteQueue.value = queue;
+            modalNoteDocId.value = docId;
+            modalNoteStudentIndex.value = (studentIndex === null || studentIndex === undefined) ? '' : studentIndex;
+            modalNoteInput.value = currentNote;
+            modalNoteError.style.display = 'none';
+            noteModalBackdrop.style.display = 'flex';
+            modalNoteInput.focus();
+        }
+        function closeNoteModal() {
+            noteModalBackdrop.style.display = 'none';
+        }
+        async function handleNoteSave() {
+            const queue = modalNoteQueue.value;
+            const docId = modalNoteDocId.value;
+            const studentIndex = modalNoteStudentIndex.value ? parseInt(modalNoteStudentIndex.value, 10) : null;
+            const newNote = modalNoteInput.value.trim();
+
+            if (!queue || !docId) {
+                modalNoteError.style.display = 'block';
                 return;
             }
-            
+
             try {
-                const docRef = doc(db, `/artifacts/${appId}/public/data/${queueName}/${docId}`);
+                const docRef = doc(db, `/artifacts/${appId}/public/data/${queue}/${docId}`);
                 
-                if (studentIndex === null || studentIndex === undefined) {
-                    await updateDoc(docRef, { note: newNote.trim() });
+                if (studentIndex === null) {
+                    await updateDoc(docRef, { note: newNote });
                 } else {
                     const studentDoc = await getDoc(docRef);
                     if (studentDoc.exists()) {
-                        const studentData = studentDoc.data();
-                        const students = studentData.students;
-                        
-                        if (students && students[studentIndex]) {
-                            students[studentIndex].note = newNote.trim();
+                        const students = studentDoc.data().students;
+                        if (students && students[studentIndex] !== undefined) {
+                            students[studentIndex].note = newNote;
                         }
-                        
                         await updateDoc(docRef, { students: students });
                     }
                 }
+                closeNoteModal();
+                showToast(`Note saved.`, false);
             } catch (error) {
                 console.error("Error updating note: ", error);
+                modalNoteError.textContent = `Error: ${error.message}`;
+                modalNoteError.style.display = 'block';
             }
         }
 
-        /**
-         * NEW: Adds a student to the main ROSTER.
-         */
-        async function addRosterStudent(firstName, lastName, grade) {
+        async function addRosterStudent(firstName, lastName, grade, flags) {
             try {
                 await addDoc(rosterColRef, {
                     firstName: firstName,
                     lastName: lastName,
-                    grade: grade
+                    grade: grade,
+                    flags: flags // NEW
                 });
-                // Clear fields
                 adminFirstName.value = '';
                 adminLastName.value = '';
                 adminGrade.value = '';
+                adminFlagAllergy.checked = false;
+                adminFlagAssistance.checked = false;
+                showToast(`${firstName} ${lastName} added to roster.`, false);
             } catch (error) {
                 console.error("Error adding student to roster: ", error);
+                showToast(`Error adding student: ${error.message}`, true);
             }
         }
 
-        /**
-         * NEW: Updates a student in the main ROSTER.
-         */
-        async function updateRosterStudent(docId, firstName, lastName, grade) {
+        async function updateRosterStudent(docId, firstName, lastName, grade, flags) {
             try {
                 const docRef = doc(db, rosterColRef.path, docId);
                 await updateDoc(docRef, {
                     firstName: firstName,
                     lastName: lastName,
-                    grade: grade
+                    grade: grade,
+                    flags: flags // NEW
                 });
+                showToast(`Student updated.`, false);
             } catch (error) {
                 console.error("Error updating roster student: ", error);
+                showToast(`Error updating: ${error.message}`, true);
             }
         }
 
-        /**
-         * NEW: Deletes a single student from the main ROSTER.
-         * @param {string} docId - The Firestore document ID.
-         */
         async function deleteRosterStudent(docId) {
-             console.log(`Deleting roster student: ${docId}`);
              try {
                 await deleteDoc(doc(db, rosterColRef.path, docId));
-                console.log("Student deleted from roster.");
+                showToast(`Student deleted from roster.`, false);
             } catch (error) {
                 console.error("Error deleting student: ", error);
+                showToast(`Error deleting: ${error.message}`, true);
             }
         }
 
-        /**
-         * NEW: Saves a new permanent group to Firestore.
-         */
         async function savePermanentGroup(groupName, studentIds) {
             if (!groupName || studentIds.length < 2) {
-                console.warn("Group must have a name and at least 2 students.");
+                showToast("Group must have a name and at least 2 students.", true);
                 return;
             }
             try {
                 await addDoc(permanentGroupsColRef, {
                     groupName: groupName,
-                    students: studentIds // Array of roster doc IDs
+                    students: studentIds
                 });
-                // Clear builder
                 adminGroupNameInput.value = '';
                 stagedForGroupBuilding = [];
                 renderGroupBuilderList();
+                showToast(`Group "${groupName}" saved.`, false);
             } catch (error) {
                 console.error("Error saving permanent group: ", error);
+                showToast(`Error saving group: ${error.message}`, true);
             }
         }
 
-        /**
-         * NEW: Deletes a permanent group from Firestore.
-         */
         async function deletePermanentGroup(docId) {
-            console.log(`Deleting permanent group: ${docId}`);
             try {
                 await deleteDoc(doc(db, permanentGroupsColRef.path, docId));
-                console.log("Permanent group deleted.");
+                showToast(`Permanent group deleted.`, false);
             } catch (error) {
                 console.error("Error deleting permanent group: ", error);
+                showToast(`Error deleting group: ${error.message}`, true);
             }
         }
 
@@ -1456,22 +1886,18 @@
         function openPasswordModal(action, promptText, colorClass) {
             passwordModalAction = action;
             passwordModalPrompt.textContent = promptText;
-            
-            modalConfirmBtn.className = "btn"; // Reset
+            modalConfirmBtn.className = "btn";
             modalConfirmBtn.classList.add(colorClass);
-
             modalPasswordInput.value = '';
             modalError.style.display = 'none';
             passwordModalBackdrop.style.display = 'flex';
             modalPasswordInput.focus();
         }
-        
         function closePasswordModal() {
             passwordModalBackdrop.style.display = 'none';
             passwordModalAction = null;
         }
 
-        // NEW: Edit Student Modal Functions
         function openEditStudentModal(docId) {
             const student = currentRoster.find(s => s.id === docId);
             if (!student) return;
@@ -1480,12 +1906,14 @@
             modalEditFirstName.value = student.firstName;
             modalEditLastName.value = student.lastName;
             modalEditGrade.value = student.grade;
+            // NEW: Populate flags
+            modalEditFlagAllergy.checked = student.flags?.allergy || false;
+            modalEditFlagAssistance.checked = student.flags?.assistance || false;
             
             modalEditError.style.display = 'none';
             editStudentModalBackdrop.style.display = 'flex';
             modalEditFirstName.focus();
         }
-        
         function closeEditStudentModal() {
             editStudentModalBackdrop.style.display = 'none';
         }
@@ -1495,15 +1923,47 @@
             const fName = modalEditFirstName.value.trim();
             const lName = modalEditLastName.value.trim();
             const grade = modalEditGrade.value.trim().toUpperCase();
+            // NEW: Get flags
+            const flags = {
+                allergy: modalEditFlagAllergy.checked,
+                assistance: modalEditFlagAssistance.checked
+            };
 
             if (!docId || !fName || !lName || !grade) {
                 modalEditError.style.display = 'block';
                 return;
             }
 
-            await updateRosterStudent(docId, fName, lName, grade);
+            await updateRosterStudent(docId, fName, lName, grade, flags);
             closeEditStudentModal();
         }
+
+        // NEW: Re-add Modal Functions
+        function openReAddModal(docId, name, grade, rosterId) {
+            modalReAddDocId.value = docId;
+            modalReAddName.value = name;
+            modalReAddGrade.value = grade;
+            modalReAddRosterId.value = rosterId;
+            reAddModalTitle.textContent = `Re-add ${sanitize(name)}`;
+            reAddModalBackdrop.style.display = 'flex';
+        }
+        function closeReAddModal() {
+            reAddModalBackdrop.style.display = 'none';
+        }
+        async function handleReAdd(queueNum) {
+            const docId = modalReAddDocId.value;
+            const name = modalReAddName.value;
+            const grade = modalReAddGrade.value;
+            const rosterId = modalReAddRosterId.value;
+
+            // Re-add to queue
+            await addStudentToQueue(queueNum, name, grade, rosterId);
+            // Remove from picked up
+            await removePickedUpStudent(docId);
+            
+            closeReAddModal();
+        }
+
 
         function openConfirmationModal(title, prompt, actionPayload) {
             confirmationModalTitle.textContent = title;
@@ -1511,7 +1971,6 @@
             confirmationModalAction = actionPayload;
             confirmationModalBackdrop.style.display = 'flex';
         }
-
         function closeConfirmationModal() {
             confirmationModalBackdrop.style.display = 'none';
             confirmationModalAction = null;
@@ -1522,7 +1981,6 @@
 
             const { action, docId, queue, studentIndex } = confirmationModalAction;
             
-            // Actions that DON'T require password
             if (action === 'removePickedUp') {
                 await removePickedUpStudent(docId);
                 closeConfirmationModal();
@@ -1534,13 +1992,11 @@
                 return; 
             }
             
-            // Actions that DO require password
             openPasswordModal(
                 { ...confirmationModalAction, originalAction: confirmationModalAction.action }, 
                 `Enter password to confirm: ${confirmationModalTitle.textContent}`,
                 'btn-red'
             );
-            
             closeConfirmationModal(); 
         }
         
@@ -1554,17 +2010,17 @@
             
             if (!passwordModalAction) return;
             
-            const { originalAction, docId, queue, action } = passwordModalAction;
+            const { originalAction, docId, queue } = passwordModalAction;
             
             if (originalAction === 'dismissQueue') {
                 await dismissStudent(queue, docId);
             } else if (action === 'clearPickedUp') {
                 await clearPickedUpList();
-            } else if (action === 'clearAllQueues') { // NEW
+            } else if (action === 'clearAllQueues') {
                 await clearAllQueues();
-            } else if (originalAction === 'deleteRosterStudent') { // NEW
+            } else if (originalAction === 'deleteRosterStudent') {
                 await deleteRosterStudent(docId);
-            } else if (originalAction === 'deletePermanentGroup') { // NEW
+            } else if (originalAction === 'deletePermanentGroup') {
                 await deletePermanentGroup(docId);
             }
             
@@ -1608,27 +2064,33 @@
             q3ColRef = collection(db, `/artifacts/${appId}/public/data/${Q3_COLLECTION}`);
             pickedupColRef = collection(db, `/artifacts/${appId}/public/data/${PICKEDUP_COLLECTION}`);
             rosterColRef = collection(db, `/artifacts/${appId}/public/data/${ROSTER_COLLECTION}`);
-            permanentGroupsColRef = collection(db, `/artifacts/${appId}/public/data/${PERMANENT_GROUPS_COLLECTION}`); // NEW
+            permanentGroupsColRef = collection(db, `/artifacts/${appId}/public/data/${PERMANENT_GROUPS_COLLECTION}`);
+            // NEW: Broadcast listener
+            broadcastDocRef = doc(db, `/artifacts/${appId}/public/data/${CONFIG_COLLECTION}/${BROADCAST_DOC}`);
 
             // Listeners
             onSnapshot(query(q1ColRef), (snapshot) => {
-                const students = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderQueueTable(q1TableBody, q1Count, Q1_COLLECTION, students);
+                currentQ1 = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderQueueTable(q1TableBody, q1Count, Q1_COLLECTION, currentQ1);
+                // if (analyticsView.style.display !== 'none') renderAnalytics(); // REMOVED
             }, (error) => console.error("Q1 Snapshot Error:", error));
 
             onSnapshot(query(q2ColRef), (snapshot) => {
-                const students = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderSiblingTable(students);
+                currentQ2 = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderSiblingTable(currentQ2);
+                // if (analyticsView.style.display !== 'none') renderAnalytics(); // REMOVED
             }, (error) => console.error("Q2 Snapshot Error:", error));
 
             onSnapshot(query(q3ColRef), (snapshot) => {
-                const students = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderQueueTable(q3TableBody, q3Count, Q3_COLLECTION, students);
+                currentQ3 = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderQueueTable(q3TableBody, q3Count, Q3_COLLECTION, currentQ3); // Assumes renderQueueTable for Q3
+                // if (analyticsView.style.display !== 'none') renderAnalytics(); // REMOVED
             }, (error) => console.error("Q3 Snapshot Error:", error));
             
             onSnapshot(query(pickedupColRef), (snapshot) => {
-                const students = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderPickedUpTable(students);
+                currentPickedUpList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderPickedUpTable(currentPickedUpList);
+                // if (analyticsView.style.display !== 'none') renderAnalytics(); // REMOVED
             }, (error) => console.error("PickedUp Snapshot Error:", error));
 
             onSnapshot(query(rosterColRef), (snapshot) => {
@@ -1645,49 +2107,51 @@
                     filterStudents(searchInput.value.trim());
                 }
                 
-                // NEW: Always re-render the admin roster list
                 if (adminView.style.display !== 'none') {
                     renderAdminRoster(currentRoster);
-                    // Re-render permanent groups too, as they rely on roster names
                     renderPermanentGroups(currentPermanentGroups);
                 }
             }, (error) => console.error("Roster Snapshot Error:", error));
             
-            // NEW: Listener for Permanent Groups
             onSnapshot(query(permanentGroupsColRef), (snapshot) => {
                 currentPermanentGroups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                // Sort by name
                 currentPermanentGroups.sort((a, b) => a.groupName.localeCompare(b.groupName));
                 
                 if (adminView.style.display !== 'none') {
                     renderPermanentGroups(currentPermanentGroups);
                 }
             }, (error) => console.error("Permanent Groups Snapshot Error:", error));
+
+            // NEW: Broadcast listener
+            onSnapshot(broadcastDocRef, (doc) => {
+                if (doc.exists() && doc.data().message) {
+                    broadcastBanner.textContent = doc.data().message;
+                    broadcastBanner.style.display = 'block';
+                    document.body.style.paddingTop = '2.5rem';
+                    document.querySelector('header').style.top = '2.5rem';
+                } else {
+                    broadcastBanner.style.display = 'none';
+                    document.body.style.paddingTop = '0';
+                    document.querySelector('header').style.top = '0';
+                }
+            }, (error) => console.error("Broadcast Snapshot Error:", error));
         }
 
         function filterStudents(searchText) {
             const lowerCaseSearch = searchText.toLowerCase();
-            
             if (searchText.length === 0) {
                 searchResults.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">Start typing to see results...</p>`;
                 return;
             }
-            
-            // Filter Students
-            const filteredStudents = currentRoster.filter(student => {
-                const fullName = `${student.firstName} ${student.lastName}`;
-                return fullName.toLowerCase().includes(lowerCaseSearch);
-            });
-
-            // NEW: Filter Groups
-            const filteredGroups = currentPermanentGroups.filter(group => {
-                return group.groupName.toLowerCase().includes(lowerCaseSearch);
-            });
-
+            const filteredStudents = currentRoster.filter(student => 
+                `${student.firstName} ${student.lastName}`.toLowerCase().includes(lowerCaseSearch)
+            );
+            const filteredGroups = currentPermanentGroups.filter(group => 
+                group.groupName.toLowerCase().includes(lowerCaseSearch)
+            );
             renderSearchResults(filteredStudents, filteredGroups);
         }
 
-        // NEW: Filter for admin group builder
         function filterAdminGroupSearch(searchText) {
             const lowerCaseSearch = searchText.toLowerCase();
             
@@ -1696,12 +2160,10 @@
                 return;
             }
             
-            const filtered = currentRoster.filter(student => {
-                const fullName = `${student.firstName} ${student.lastName}`;
-                return fullName.toLowerCase().includes(lowerCaseSearch);
-            });
+            const filtered = currentRoster.filter(student => 
+                `${student.firstName} ${student.lastName}`.toLowerCase().includes(lowerCaseSearch)
+            );
             
-            // Render results for group builder
             if (filtered.length === 0) {
                 adminGroupSearchResults.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">No students found.</p>`;
                 return;
@@ -1728,43 +2190,60 @@
 
             setupFirebase();
             
-            // --- NEW: Tab Toggling Listeners ---
+            // --- Tab Toggling Listeners ---
             queuesTabBtn.addEventListener('click', () => {
                 queuesView.style.display = 'block';
                 adminView.style.display = 'none';
+                // analyticsView.style.display = 'none'; // REMOVED
                 queuesTabBtn.classList.add('active');
                 adminTabBtn.classList.remove('active');
+                // analyticsTabBtn.classList.remove('active'); // REMOVED
             });
             
             adminTabBtn.addEventListener('click', () => {
                 queuesView.style.display = 'none';
                 adminView.style.display = 'block';
+                // analyticsView.style.display = 'none'; // REMOVED
                 queuesTabBtn.classList.remove('active');
                 adminTabBtn.classList.add('active');
-                // Render roster when tab is clicked
+                // analyticsTabBtn.classList.remove('active'); // REMOVED
+                // Render admin lists when tab is clicked
                 renderAdminRoster(currentRoster); 
-                // FIX: Also render permanent groups when tab is clicked
                 renderPermanentGroups(currentPermanentGroups);
             });
+            
+            /* (REMOVED)
+            analyticsTabBtn.addEventListener('click', () => {
+                queuesView.style.display = 'none';
+                adminView.style.display = 'none';
+                analyticsView.style.display = 'block';
+                queuesTabBtn.classList.remove('active');
+                adminTabBtn.classList.remove('active');
+                analyticsTabBtn.classList.add('active');
+                // Render analytics when tab is clicked
+                renderAnalytics(); 
+            });
+            */
+
 
             // --- Add Student Section Listeners ---
-            searchInput.addEventListener('input', (e) => {
-                filterStudents(e.target.value);
-            });
+            searchInput.addEventListener('input', (e) => filterStudents(e.target.value));
 
             searchResults.addEventListener('click', (e) => {
-                const target = e.target;
-                const { queue, name, grade, action, groupId } = target.dataset;
+                const target = e.target.closest('button');
+                if (!target) return;
+                
+                const { queue, name, grade, action, groupId, rosterId } = target.dataset;
 
-                if (action === 'stage-group') { // Renamed from btn-purple
-                    stagedSiblingGroup.push({ name, grade });
+                if (action === 'stage-group') {
+                    stagedSiblingGroup.push({ name, grade, rosterId }); // NEW: Store rosterId
                     renderStagedGroup();
-                } else if (action === 'add-permanent-group') { // NEW
+                } else if (action === 'add-permanent-group') {
                     addPermanentGroupToQueue(groupId);
                     searchInput.value = '';
                     filterStudents('');
                 } else if (name && grade && queue) {
-                    addStudentToQueue(queue, name, grade);
+                    addStudentToQueue(queue, name, grade, rosterId); // NEW: Pass rosterId
                     searchInput.value = '';
                     filterStudents('');
                 }
@@ -1773,16 +2252,12 @@
             stagedList.addEventListener('click', (e) => {
                 const removeBtn = e.target.closest('.remove-staged-btn');
                 if (removeBtn) {
-                    const indexToRemove = parseInt(removeBtn.dataset.index, 10);
-                    stagedSiblingGroup.splice(indexToRemove, 1);
+                    stagedSiblingGroup.splice(parseInt(removeBtn.dataset.index, 10), 1);
                     renderStagedGroup();
                 }
             });
             
-            addStagedGroupBtn.addEventListener('click', () => {
-                addGroupToQueue(stagedSiblingGroup);
-            });
-
+            addStagedGroupBtn.addEventListener('click', () => addGroupToQueue(stagedSiblingGroup));
             manualAddBtn.addEventListener('click', () => {
                 const name = manualNameInput.value.trim();
                 if (name) { addStudentToQueue(1, name, 'N/A'); manualNameInput.value = ''; }
@@ -1796,7 +2271,7 @@
                 if (name) { addStudentToQueue(3, name, 'N/A'); manualNameInput.value = ''; }
             });
             
-            // --- NEW: Admin Panel Listeners ---
+            // --- Admin Panel Listeners ---
             clearPickedUpBtn.addEventListener('click', () => {
                 openPasswordModal(
                     { action: 'clearPickedUp' },
@@ -1817,17 +2292,21 @@
                 const fName = adminFirstName.value.trim();
                 const lName = adminLastName.value.trim();
                 const grade = adminGrade.value.trim().toUpperCase();
+                // NEW: Get flags
+                const flags = {
+                    allergy: adminFlagAllergy.checked,
+                    assistance: adminFlagAssistance.checked
+                };
                 
                 if (fName && lName && grade) {
-                    addRosterStudent(fName, lName, grade);
+                    addRosterStudent(fName, lName, grade, flags);
                 } else {
-                    console.warn("All fields required.");
+                    showToast("All fields required to add student.", true);
                     if (!fName) adminFirstName.style.borderColor = 'var(--red)';
                     if (!lName) adminLastName.style.borderColor = 'var(--red)';
                     if (!grade) adminGrade.style.borderColor = 'var(--red)';
                 }
             });
-            // Clear error rings on input
             adminFirstName.addEventListener('input', () => adminFirstName.style.borderColor = 'var(--border-color)');
             adminLastName.addEventListener('input', () => adminLastName.style.borderColor = 'var(--border-color)');
             adminGrade.addEventListener('input', () => adminGrade.style.borderColor = 'var(--border-color)');
@@ -1836,7 +2315,6 @@
             adminRosterList.addEventListener('click', (e) => {
                 const btn = e.target.closest('.action-btn');
                 if (!btn) return;
-
                 const { action, id } = btn.dataset;
                 
                 if (action === 'delete-roster-student') {
@@ -1850,11 +2328,8 @@
                 }
             });
 
-            // NEW: Listeners for Admin Group Builder
-            adminGroupSearchInput.addEventListener('input', (e) => {
-                filterAdminGroupSearch(e.target.value);
-            });
-
+            // Admin Group Builder
+            adminGroupSearchInput.addEventListener('input', (e) => filterAdminGroupSearch(e.target.value));
             adminGroupSearchResults.addEventListener('click', (e) => {
                 const addBtn = e.target.closest('[data-action="stage-for-builder"]');
                 if (addBtn && !addBtn.disabled) {
@@ -1862,29 +2337,24 @@
                     if (student) {
                         stagedForGroupBuilding.push(student);
                         renderGroupBuilderList();
-                        addBtn.disabled = true; // Disable button after adding
+                        addBtn.disabled = true;
                         addBtn.textContent = 'Added';
                     }
                 }
             });
-
             adminGroupBuilderList.addEventListener('click', (e) => {
                 const removeBtn = e.target.closest('.remove-staged-builder-btn');
                 if (removeBtn) {
-                    const indexToRemove = parseInt(removeBtn.dataset.index, 10);
-                    stagedForGroupBuilding.splice(indexToRemove, 1);
+                    stagedForGroupBuilding.splice(parseInt(removeBtn.dataset.index, 10), 1);
                     renderGroupBuilderList();
-                    // We need to re-render the search results to re-enable any 'Add' buttons
                     filterAdminGroupSearch(adminGroupSearchInput.value);
                 }
             });
-            
             adminSaveGroupBtn.addEventListener('click', () => {
                 const groupName = adminGroupNameInput.value.trim();
                 const studentIds = stagedForGroupBuilding.map(s => s.id);
                 savePermanentGroup(groupName, studentIds);
             });
-
             adminPermanentGroupList.addEventListener('click', (e) => {
                 const deleteBtn = e.target.closest('[data-action="delete-permanent-group"]');
                 if (deleteBtn) {
@@ -1896,57 +2366,65 @@
                 }
             });
 
+            // NEW: Broadcast Listeners
+            broadcastSave.addEventListener('click', async () => {
+                const message = broadcastInput.value.trim();
+                if (message) {
+                    try {
+                        await setDoc(broadcastDocRef, { message: message });
+                        showToast("Broadcast message saved.", false);
+                    } catch (e) {
+                        showToast(`Error saving: ${e.message}`, true);
+                    }
+                }
+            });
+            broadcastClear.addEventListener('click', async () => {
+                try {
+                    await setDoc(broadcastDocRef, { message: "" });
+                    broadcastInput.value = '';
+                    showToast("Broadcast message cleared.", false);
+                } catch (e) {
+                    showToast(`Error clearing: ${e.message}`, true);
+                }
+            });
 
             // --- Delegated clicks for all TABLE actions ---
             document.body.addEventListener('click', async (e) => {
                 const target = e.target.closest('.action-btn');
                 if (!target) return;
-                
-                // Check if the click is inside the admin panel; if so, ignore it
-                // (it's handled by the adminRosterList listener)
-                if (target.closest('#admin-roster-list')) return;
+                if (target.closest('#admin-roster-list')) return; // Handled by other listener
 
-                const { action, id, name, queue } = target.dataset;
+                const { action, id, name, queue, currentNote, grade, rosterId } = target.dataset;
                 const studentIndex = target.dataset.index ? parseInt(target.dataset.index, 10) : null;
                 
                 if (action === 'dismiss-queue') {
                     openConfirmationModal(
                         'Dismiss Student/Group?',
-                        `Are you sure you want to dismiss this entry? (ID: ${id})`,
+                        `Are you sure you want to dismiss this entry?`,
                         { action: 'dismissQueue', docId: id, queue: queue }
                     );
-                
                 } else if (action === 'remove-pickedup') {
                     openConfirmationModal(
                         'Remove from Picked Up?',
-                        `Are you sure you want to remove ${name} (ID: ${id})?`,
+                        `Are you sure you want to remove ${name}?`,
                         { action: 'removePickedUp', docId: id }
                     );
-                
                 } else if (action === 'dismiss-group-student') {
                     openConfirmationModal(
                         'Dismiss Student?',
                         `Are you sure you want to dismiss this student from the group?`,
                         { action: 'dismissGroupStudent', docId: id, queue: queue, studentIndex: studentIndex }
                     );
-
                 } else if (action === 'highlight') {
                     toggleHighlight(queue, id);
-                
                 } else if (action === 'highlight-group-student') {
                     toggleGroupStudentHighlight(queue, id, studentIndex);
-                
-                } else if (action === 'add-note') {
-                    const docRef = doc(db, `/artifacts/${appId}/public/data/${queue}/${id}`);
-                    const studentDoc = await getDoc(docRef);
-                    const currentNote = studentDoc.data().note || "";
-                    updateStudentNote(queue, id, null, currentNote);
-
-                } else if (action === 'add-note-group') {
-                    const docRef = doc(db, `/artifacts/${appId}/public/data/${queue}/${id}`);
-                    const studentDoc = await getDoc(docRef);
-                    const currentNote = studentDoc.data().students[studentIndex].note || "";
-                    updateStudentNote(queue, id, studentIndex, currentNote);
+                } else if (action === 'add-note' || action === 'add-note-group') {
+                    // NEW: Open Note Modal
+                    openNoteModal(queue, id, studentIndex, currentNote);
+                } else if (action === 're-add') {
+                    // NEW: Open Re-add Modal
+                    openReAddModal(id, name, grade, rosterId);
                 }
             });
             
@@ -1956,10 +2434,18 @@
             confirmationModalCancelBtn.addEventListener('click', closeConfirmationModal);
             confirmationModalConfirmBtn.addEventListener('click', handleConfirmationConfirm);
             
-            // NEW: Edit Student Modal Listeners
             modalEditCancelBtn.addEventListener('click', closeEditStudentModal);
             modalEditSaveBtn.addEventListener('click', handleEditStudentSave);
+
+            // NEW: Note Modal Listeners
+            modalNoteCancelBtn.addEventListener('click', closeNoteModal);
+            modalNoteSaveBtn.addEventListener('click', handleNoteSave);
             
+            // NEW: Re-add Modal Listeners
+            modalReAddCancelBtn.addEventListener('click', closeReAddModal);
+            modalReAddQ1.addEventListener('click', () => handleReAdd(1));
+            modalReAddQ2.addEventListener('click', () => handleReAdd(2));
+            modalReAddQ3.addEventListener('click', () => handleReAdd(3));
         });
     </script>
 
