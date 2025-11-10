@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doral Academy Car-Line Admin Panel v4</title>
+    <title>Doral Academy Car-Line</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- 1. Chart.js for Analytics (REMOVED) -->
-
     <style>
         /* Gruvbox Dark Colors */
         :root {
@@ -35,8 +33,7 @@
             color: var(--fg);
             margin: 0;
             padding: 0;
-            /* Added padding-top for the broadcast banner */
-            padding-top: 2.5rem;
+            /* No padding-top, broadcast banner is removed */
         }
         .container {
             margin: 0 auto;
@@ -50,8 +47,7 @@
             padding: 0.75rem 1rem;
             border-bottom: 2px solid var(--border-color);
             position: sticky;
-            /* Stick to the top, under the banner */
-            top: 2.5rem; 
+            top: 0; 
             z-index: 10;
         }
         .header-content {
@@ -87,7 +83,7 @@
         #auth-status {
             font-size: 0.9rem;
             color: var(--fg-gray);
-            margin-left: auto; 
+            margin-left: auto; /* Changed from 1rem to auto to push to right */
         }
         .connected { color: var(--green) !important; }
         .disconnected { color: var(--red) !important; }
@@ -156,7 +152,6 @@
             cursor: pointer;
             font-size: 0.9rem;
             transition: opacity 0.2s;
-            /* NEW: For icon alignment */
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -176,26 +171,6 @@
         .btn-group .btn { flex: 1; }
         .btn-full { width: 100%; }
 
-        /* NEW: Checkbox styles for Flags */
-        .checkbox-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-        .checkbox-label input {
-            margin: 0 0.5rem 0 0;
-            width: auto; /* Override default */
-            margin-bottom: 0; /* Override default */
-        }
-
-        /* NEW: Student Flag Icons */
         .flag-icon {
             font-size: 1.1rem;
             margin-left: 4px;
@@ -212,7 +187,7 @@
             overflow-y: auto;
             padding: 0.25rem;
         }
-        #sibling-group-list, #admin-group-builder-list { min-height: 50px; }
+        #sibling-group-list { min-height: 50px; }
         .search-item, .sibling-item {
             display: flex;
             justify-content: space-between;
@@ -282,12 +257,10 @@
             font-weight: 500;
             border: none;
             cursor: pointer;
-            /* NEW: Flex for icon */
             display: inline-flex;
             align-items: center;
             justify-content: center;
         }
-        /* NEW: Icon styling */
         .action-btn svg {
             width: 14px;
             height: 14px;
@@ -295,7 +268,6 @@
         .btn-delete { background-color: var(--red); color: var(--fg); }
         .btn-highlight { background-color: var(--yellow); }
         .btn-note { background-color: var(--blue); }
-        /* NEW: Re-add button style */
         .btn-re-add { background-color: var(--aqua); color: var(--bg-dark); }
 
         /* Sibling Group List in Table */
@@ -344,7 +316,7 @@
             color: var(--fg);
             margin-top: 0;
         }
-        #modal-error, #modal-edit-error, #modal-note-error {
+        #modal-note-error {
             color: var(--red);
             font-size: 0.9rem;
             display: none; /* hidden */
@@ -356,84 +328,7 @@
             margin-top: 1rem;
         }
 
-        /* Admin Roster List */
-        #admin-roster-list-container {
-            background-color: var(--bg-med);
-        }
-        #admin-roster-list .roster-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0.75rem;
-            border-radius: 4px;
-            background-color: var(--bg-light);
-            margin: 0.25rem;
-        }
-        #admin-roster-list .roster-item:hover {
-            background-color: var(--bg-dark);
-        }
-        
-        .roster-item-actions {
-            display: flex;
-            gap: 4px;
-        }
-
-        /* Admin group builder search results */
-        #admin-group-search-results {
-            background-color: var(--bg-med);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            max-height: 100px;
-            overflow-y: auto;
-            padding: 0.25rem;
-        }
-        #admin-permanent-group-list {
-            background-color: var(--bg-med);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 0.25rem;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        .permanent-group-item {
-             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0.75rem;
-            border-radius: 4px;
-            background-color: var(--bg-light);
-            margin: 0.25rem;
-        }
-        .permanent-group-item ul {
-            font-size: 0.8rem;
-            color: var(--fg-gray);
-            padding-left: 1rem;
-            margin: 0.25rem 0 0 0;
-        }
-
-        /* Make admin section fill height */
-        #admin-view > .section {
-            min-height: 85vh;
-        }
-
-        /* NEW: Broadcast Banner */
-        #broadcast-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--yellow);
-            color: var(--bg-dark);
-            font-weight: 600;
-            padding: 0.5rem;
-            text-align: center;
-            z-index: 100;
-            display: none; /* Hidden by default */
-            box-sizing: border-box;
-            height: 2.5rem; /* Fixed height */
-        }
-
-        /* NEW: Toast / Snackbar Notifications */
+        /* Toast / Snackbar Notifications */
         @keyframes slideIn {
             to {
                 opacity: 1;
@@ -441,7 +336,6 @@
             }
         }
         
-        /* NEW: Added the missing slideOut animation */
         @keyframes slideOut {
             from {
                 opacity: 1;
@@ -453,7 +347,6 @@
             }
         }
 
-        /* NEW: Added the missing container and toast styles */
         #toast-container {
             position: fixed;
             bottom: 1rem;
@@ -470,7 +363,6 @@
             font-weight: 500;
             color: var(--bg-dark);
             box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            /* Start state for animation */
             opacity: 0;
             transform: translateX(100%);
             animation: slideIn 0.3s forwards;
@@ -484,59 +376,163 @@
         }
 
 
-        /* NEW: Analytics View (REMOVED) */
-        /*
-        #analytics-view .section {
+        /* --- Phone Mode (Always On) --- */
+        
+        /* Simplify Header */
+        body.phone-mode .header-content {
+            gap: 0.5rem; /* Tighten spacing */
+        }
+        body.phone-mode #auth-status {
+            display: none; /* Hide status */
+        }
+        body.phone-mode .header-tabs {
+            flex: 1; /* Let tabs fill space */
+        }
+        
+        /* Hide "Picked Up" list */
+        body.phone-mode #queues-view > .section:nth-of-type(3) {
+            display: none;
+        }
+        
+        /* Stack Grids */
+        body.phone-mode .grid-3 {
+            grid-template-columns: 1fr;
+        }
+        
+        /* Improve Tappability & Sizing */
+        body.phone-mode .btn {
+            padding: 0.8rem 1.2rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        body.phone-mode input[type="text"],
+        body.phone-mode input[type="password"],
+        body.phone-mode textarea {
+            font-size: 1.1rem;
+            padding: 0.8rem;
+        }
+        body.phone-mode .search-item-actions .btn {
+            padding: 0.5rem 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        /* Enlarge Tables */
+        body.phone-mode .table-container {
+            max-height: 50vh; /* Allow a bit more scroll */
+        }
+        body.phone-mode th, 
+        body.phone-mode td {
+            padding: 10px 12px;
+            font-size: 1rem; /* Larger text */
+        }
+        body.phone-mode .action-btn {
+            padding: 10px;
+        }
+        body.phone-mode .action-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        body.phone-mode .sibling-group-ul li {
+            font-size: 1rem;
+        }
+
+        /* Enlarge Modals */
+        body.phone-mode .modal-box {
+            max-width: 95%;
+            padding: 1rem;
+        }
+        body.phone-mode .modal-actions {
+            margin-top: 1.5rem;
+        }
+
+        /* Fix for Phone Mode Search Bar */
+        body.phone-mode #search-results {
+            max-height: 30vh; 
+        }
+        body.phone-mode .search-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem; 
+            padding: 0.75rem; 
+        }
+        body.phone-mode .search-item-actions {
+            flex-direction: column;
+            width: 100%;
+            gap: 0.5rem; 
+        }
+        body.phone-mode .search-item-actions .btn {
+            width: 100%;
+            padding: 0.75rem 1rem; 
+            font-size: 1rem;
+        }
+        
+        /* --- NEW: Classroom View (copied from index.html) --- */
+        #classroom-view .section {
             min-height: 85vh;
         }
-        .stat-card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-        .stat-card {
+        #classroom-list-container {
+            /* Use CSS columns for a dense list */
+            column-count: 5; /* Start with 5, can be adjusted */
+            column-gap: 1.5rem;
             background-color: var(--bg-dark);
             padding: 1rem;
             border-radius: 8px;
-            border-left: 4px solid var(--purple);
+            min-height: 75vh; /* Ensure it fills space */
         }
-        .stat-card-title {
-            font-size: 0.9rem;
-            color: var(--fg-gray);
-            margin-bottom: 0.25rem;
-        }
-        .stat-card-value {
-            font-size: 2rem;
-            font-weight: 700;
+        .classroom-list-item {
+            font-size: 1.1rem;
+            font-weight: 500;
             color: var(--fg);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 4px;
+            /* Prevent item from breaking across columns */
+            break-inside: avoid-column;
         }
-        #pickup-chart-container {
-            background-color: var(--bg-dark);
-            padding: 1rem;
-            border-radius: 8px;
+        .classroom-list-item.highlighted {
+            background-color: var(--yellow);
+            color: var(--bg-dark);
+            font-weight: 600;
         }
-        */
+        .classroom-list-item span.grade {
+            color: var(--fg-gray);
+            font-size: 0.9rem;
+            margin-left: 4px;
+        }
+        .classroom-list-item.highlighted span.grade {
+            color: var(--bg-dark);
+        }
+        
+        /* Responsive columns for classroom view (copied from index.html) */
+        @media (max-width: 1200px) {
+            #classroom-list-container { column-count: 4; }
+        }
+        @media (max-width: 900px) {
+            #classroom-list-container { column-count: 3; }
+        }
+        
+        /* Phone Mode: Stack classroom view into 2 columns (copied from index.html) */
+        body.phone-mode #classroom-list-container {
+            column-count: 2;
+        }
+        body.phone-mode .classroom-list-item {
+            font-size: 1.2rem;
+        }
+        /* NOTE: We are NOT hiding the classroom-tab-btn in phone-only view */
+
+        /* --- End Phone Mode --- */
     </style>
 </head>
-<body>
+<body class="phone-mode"> <!-- Phone mode is hardcoded -->
     
-    <!-- NEW: Broadcast Banner -->
-    <div id="broadcast-banner"></div>
-
     <!-- HEADER -->
     <header>
         <div class="header-content">
-            <div>
-                <h1 style="font-size: 1.25rem; margin: 0;">Doral Academy Car-Line Admin Panel</h1>
-                <p style="font-size: 0.8rem; color: var(--fg-gray); margin: 0.25rem 0 0 0;">Created and coded by Max Prebeg V4.0</p>
-            </div>
             <!-- Tabs -->
             <div class="header-tabs">
                 <button id="queues-tab-btn" class="tab-btn active">Queues</button>
-                <button id="admin-tab-btn" class="tab-btn">Admin Panel</button>
-                <!-- NEW: Analytics Tab Button (REMOVED) -->
-                <!-- <button id="analytics-tab-btn" class="tab-btn">Analytics</button> -->
+                <!-- NEW: Classroom Tab Button -->
+                <button id="classroom-tab-btn" class="tab-btn">Classroom View</button>
             </div>
             <div id="auth-status">Connecting...</div>
         </div>
@@ -645,7 +641,7 @@
                 </div>
             </section>
             
-            <!-- 3. Picked Up List -->
+            <!-- 3. Picked Up List (Hidden by phone-mode CSS) -->
             <section class="section">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                     <h2 style="color: var(--purple); margin: 0; border: none; padding: 0;">Picked Up <span id="pickedup-count">(0)</span></h2>
@@ -657,7 +653,6 @@
                                 <th>Name</th>
                                 <th>Grade</th>
                                 <th>Picked Up At</th>
-                                <!-- NEW: Wait Time column -->
                                 <th>Wait Time</th>
                                 <th>Action</th>
                             </tr>
@@ -669,130 +664,29 @@
                 </div>
             </section>
         </div> <!-- END of #queues-view -->
-
-        <!-- 2. ADMIN VIEW -->
-        <div id="admin-view" style="display: none;">
-            <section class="section">
-                <h2>Admin Panel: Roster & Site Management</h2>
-                <div class="grid-3">
-                    <!-- Column 1: Add Student & Site -->
-                    <div>
-                        <h3>Add New Student to Roster</h3>
-                        <input type="text" id="admin-first-name" placeholder="First Name">
-                        <input type="text" id="admin-last-name" placeholder="Last Name">
-                        <input type="text" id="admin-grade" placeholder="Grade (e.g., 5, KG)">
-                        
-                        <!-- NEW: Flags Checkboxes -->
-                        <h4 style="font-size: 1rem; color: var(--fg-gray); margin-bottom: 0.5rem; margin-top: 1rem;">Flags:</h4>
-                        <div class="checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="admin-flag-allergy"> ⚠️ Allergy
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" id="admin-flag-assistance"> ♿ Needs Assistance
-                            </label>
-                            <!-- Add more flags here if needed -->
-                        </div>
-                        
-                        <button id="admin-add-student-btn" class="btn btn-blue btn-full">Add Student</button>
-                        
-                        <h3 style="margin-top: 2rem;">Site Management</h3>
-                        <input type="text" id="broadcast-input" placeholder="Broadcast message...">
-                        <div class="btn-group" style="margin-top: 0.5rem;">
-                            <button id="broadcast-save" class="btn btn-purple">Save</button>
-                            <button id="broadcast-clear" class="btn btn-gray">Clear</button>
-                        </div>
-
-                        <h3 style="margin-top: 2rem; color: var(--red);">Danger Zone</h3>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <button id="clear-all-btn" class="btn btn-red">Clear All 3 Queues</button>
-                            <button id="clear-pickedup-btn" class="btn btn-orange">Reset "Picked Up" List</button>
-                        </div>
-                    </div>
-                    <!-- Column 2: Roster List -->
-                    <div>
-                        <h3>Current Roster</h3>
-                        <div id="admin-roster-list-container" class="table-container" style="max-height: 70vh;">
-                            <div id="admin-roster-list" style="padding: 0.25rem;">
-                                <p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">Loading roster...</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Column 3: Manage Groups -->
-                    <div>
-                        <h3>Manage Permanent Groups</h3>
-                        <input type="text" id="admin-group-name-input" placeholder="New Group Name (e.g., 'Smith Family')">
-                        
-                        <h4 style="font-size: 1rem; color: var(--fg-gray); margin-bottom: 0.5rem; margin-top: 1rem;">Build Group:</h4>
-                        <input type="text" id="admin-group-search-input" placeholder="Search roster to add student...">
-                        <div id="admin-group-search-results">
-                             <p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">Type above to find students...</p>
-                        </div>
-                        <div id="admin-group-builder-list" style="margin-top: 0.5rem;">
-                            <p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">No students staged for group.</p>
-                        </div>
-                        <button id="admin-save-group-btn" class="btn btn-green btn-full" style="margin-top: 0.5rem;">Save New Group</button>
-
-                        <h3 style="margin-top: 1.5rem;">Existing Groups</h3>
-                        <div id="admin-permanent-group-list-container" class="table-container" style="max-height: 60vh;">
-                            <div id="admin-permanent-group-list">
-                                <p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">Loading groups...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div> <!-- END of #admin-view -->
         
-        <!-- 3. NEW ANALYTICS VIEW (REMOVED) -->
-        <!--
-        <div id="analytics-view" style="display: none;">
+        <!-- 3. CLASSROOM VIEW (NEW) -->
+        <div id="classroom-view" style="display: none;">
             <section class="section">
-                <h2>Analytics Dashboard</h2>
-                
-                <div class="stat-card-grid">
-                    <div class="stat-card" style="border-left-color: var(--purple);">
-                        <div class="stat-card-title">Total Picked Up Today</div>
-                        <div id="stat-total-pickedup" class="stat-card-value">0</div>
-                    </div>
-                    <div class="stat-card" style="border-left-color: var(--aqua);">
-                        <div class="stat-card-title">Currently in Queues</div>
-                        <div id="stat-total-in-queue" class="stat-card-value">0</div>
-                    </div>
-                    <div class="stat-card" style="border-left-color: var(--yellow);">
-                        <div class="stat-card-title">Avg. Wait Time</div>
-                        <div id="stat-avg-wait-time" class="stat-card-value">--:--</div>
-                    </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2 style="color: var(--yellow); margin: 0; border: none; padding: 0;">Student Pickup Queue (All Students)</h2>
+                    <span id="classroom-total-count" style="font-size: 1.5rem; font-weight: 700; color: var(--fg);">(0)</span>
                 </div>
-
-                <div id="pickup-chart-container">
-                    <h3>Pickups by Hour</h3>
-                    <canvas id="pickup-chart"></canvas>
+                <div id="classroom-list-container">
+                    <p style="text-align: center; color: var(--fg-gray); font-size: 1.2rem; padding: 2rem 0;">Loading students...</p>
                 </div>
-
             </section>
         </div>
-        -->
+
+        <!-- Admin and Classroom views are REMOVED -->
 
     </main>
     
     <!-- MODALS -->
 
-    <!-- Password Modal -->
-    <div id="password-modal-backdrop" class="modal-backdrop">
-        <div id="password-modal-box" class="modal-box">
-            <h3>Enter Admin Password</h3>
-            <p id="password-modal-prompt" style="color: var(--fg-gray); margin-bottom: 1rem;">Please enter the admin password.</p>
-            <input type="password" id="modal-password-input" placeholder="Password...">
-            <p id="modal-error">Incorrect password.</p>
-            <div class="modal-actions">
-                <button id="modal-cancel-btn" class="btn btn-gray">Cancel</button>
-                <button id="modal-confirm-btn" class="btn btn-red">Confirm</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Confirmation Modal -->
+    <!-- Password Modal (REMOVED) -->
+    
+    <!-- Confirmation Modal (Kept for queue actions) -->
     <div id="confirmation-modal-backdrop" class="modal-backdrop">
         <div id="confirmation-modal-box" class="modal-box">
             <h3 id="confirmation-modal-title">Confirm Action</h3>
@@ -804,43 +698,9 @@
         </div>
     </div>
 
-    <!-- Edit Student Modal -->
-    <div id="edit-student-modal-backdrop" class="modal-backdrop">
-        <div id="edit-student-modal-box" class="modal-box">
-            <h3>Edit Student</h3>
-            
-            <input type="hidden" id="modal-edit-student-id">
-            
-            <label for="modal-edit-first-name">First Name</label>
-            <input type="text" id="modal-edit-first-name" placeholder="First Name">
-            
-            <label for="modal-edit-last-name">Last Name</label>
-            <input type="text" id="modal-edit-last-name" placeholder="Last Name">
-            
-            <label for="modal-edit-grade">Grade</label>
-            <input type="text" id="modal-edit-grade" placeholder="Grade">
+    <!-- Edit Student Modal (REMOVED) -->
 
-            <!-- NEW: Edit Flags Checkboxes -->
-            <h4 style="font-size: 1rem; color: var(--fg-gray); margin-bottom: 0.5rem; margin-top: 1rem;">Flags:</h4>
-            <div class="checkbox-group">
-                <label class="checkbox-label">
-                    <input type="checkbox" id="modal-edit-flag-allergy"> ⚠️ Allergy
-                </label>
-                <label class="checkbox-label">
-                    <input type="checkbox" id="modal-edit-flag-assistance"> ♿ Needs Assistance
-                </label>
-            </div>
-            
-            <p id="modal-edit-error">All fields are required.</p>
-
-            <div class="modal-actions">
-                <button id="modal-edit-cancel-btn" class="btn btn-gray">Cancel</button>
-                <button id="modal-edit-save-btn" class="btn btn-blue">Save Changes</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- NEW: Note Modal (replaces prompt) -->
+    <!-- Note Modal (Kept) -->
     <div id="note-modal-backdrop" class="modal-backdrop">
         <div id="note-modal-box" class="modal-box">
             <h3>Add/Edit Note</h3>
@@ -860,7 +720,7 @@
         </div>
     </div>
     
-    <!-- NEW: Re-add Student Modal -->
+    <!-- Re-add Student Modal (Kept) -->
     <div id="re-add-modal-backdrop" class="modal-backdrop">
         <div id="re-add-modal-box" class="modal-box">
             <h3 id="re-add-modal-title">Re-add Student</h3>
@@ -883,7 +743,7 @@
         </div>
     </div>
     
-    <!-- NEW: Toast Container -->
+    <!-- Toast Container -->
     <div id="toast-container"></div>
 
     <!-- Firebase and App Logic -->
@@ -906,12 +766,11 @@
             getDocs,
             getDoc,
             updateDoc,
-            setDoc, // NEW: For broadcast
             serverTimestamp,
             setLogLevel
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // --- Firebase Config (IDENTICAL to index.html) ---
+        // --- Firebase Config ---
         const firebaseConfig = {
           apiKey: "AIzaSyBbTFLhxzXf08OVDGGsK54t3qDzPVvsJ3w",
           authDomain: "conferencedoral.firebaseapp.com",
@@ -928,11 +787,13 @@
         
         // View Toggling
         const queuesTabBtn = document.getElementById('queues-tab-btn');
-        const adminTabBtn = document.getElementById('admin-tab-btn');
-        // const analyticsTabBtn = document.getElementById('analytics-tab-btn'); // REMOVED
         const queuesView = document.getElementById('queues-view');
-        const adminView = document.getElementById('admin-view');
-        // const analyticsView = document.getElementById('analytics-view'); // REMOVED
+
+        // NEW: Classroom View
+        const classroomTabBtn = document.getElementById('classroom-tab-btn');
+        const classroomView = document.getElementById('classroom-view');
+        const classroomListContainer = document.getElementById('classroom-list-container');
+        const classroomTotalCount = document.getElementById('classroom-total-count');
 
         // Add Student Section
         const searchInput = document.getElementById('search-input');
@@ -956,40 +817,9 @@
         const pickedUpTableBody = document.getElementById('pickedup-table-body');
         const pickedUpCount = document.getElementById('pickedup-count');
         
-        // Admin Panel
-        const adminRosterList = document.getElementById('admin-roster-list');
-        const adminAddStudentBtn = document.getElementById('admin-add-student-btn');
-        const adminFirstName = document.getElementById('admin-first-name');
-        const adminLastName = document.getElementById('admin-last-name');
-        const adminGrade = document.getElementById('admin-grade');
-        const clearAllBtn = document.getElementById('clear-all-btn');
-        const clearPickedUpBtn = document.getElementById('clear-pickedup-btn');
-        // NEW: Admin Flags
-        const adminFlagAllergy = document.getElementById('admin-flag-allergy');
-        const adminFlagAssistance = document.getElementById('admin-flag-assistance');
+        // Admin Panel (REMOVED)
         
-        // Admin Group Management
-        const adminGroupNameInput = document.getElementById('admin-group-name-input');
-        const adminGroupSearchInput = document.getElementById('admin-group-search-input');
-        const adminGroupSearchResults = document.getElementById('admin-group-search-results');
-        const adminGroupBuilderList = document.getElementById('admin-group-builder-list');
-        const adminSaveGroupBtn = document.getElementById('admin-save-group-btn');
-        const adminPermanentGroupList = document.getElementById('admin-permanent-group-list');
-
-        // Edit Student Modal
-        const editStudentModalBackdrop = document.getElementById('edit-student-modal-backdrop');
-        const modalEditStudentId = document.getElementById('modal-edit-student-id');
-        const modalEditFirstName = document.getElementById('modal-edit-first-name');
-        const modalEditLastName = document.getElementById('modal-edit-last-name');
-        const modalEditGrade = document.getElementById('modal-edit-grade');
-        const modalEditError = document.getElementById('modal-edit-error');
-        const modalEditCancelBtn = document.getElementById('modal-edit-cancel-btn');
-        const modalEditSaveBtn = document.getElementById('modal-edit-save-btn');
-        // NEW: Edit Flags
-        const modalEditFlagAllergy = document.getElementById('modal-edit-flag-allergy');
-        const modalEditFlagAssistance = document.getElementById('modal-edit-flag-assistance');
-
-        // Note Modal (NEW)
+        // Note Modal
         const noteModalBackdrop = document.getElementById('note-modal-backdrop');
         const modalNoteQueue = document.getElementById('modal-note-queue');
         const modalNoteDocId = document.getElementById('modal-note-doc-id');
@@ -999,7 +829,7 @@
         const modalNoteCancelBtn = document.getElementById('modal-note-cancel-btn');
         const modalNoteSaveBtn = document.getElementById('modal-note-save-btn');
         
-        // Re-add Modal (NEW)
+        // Re-add Modal
         const reAddModalBackdrop = document.getElementById('re-add-modal-backdrop');
         const reAddModalTitle = document.getElementById('re-add-modal-title');
         const modalReAddDocId = document.getElementById('modal-re-add-doc-id');
@@ -1011,41 +841,20 @@
         const modalReAddQ3 = document.getElementById('modal-re-add-q3');
         const modalReAddCancelBtn = document.getElementById('modal-re-add-cancel-btn');
 
-        // Modals (Password, Confirmation)
-        const passwordModalBackdrop = document.getElementById('password-modal-backdrop');
-        const passwordModalPrompt = document.getElementById('password-modal-prompt');
-        const modalCancelBtn = document.getElementById('modal-cancel-btn');
-        const modalConfirmBtn = document.getElementById('modal-confirm-btn');
-        const modalPasswordInput = document.getElementById('modal-password-input');
-        const modalError = document.getElementById('modal-error');
+        // Confirmation Modal
         const confirmationModalBackdrop = document.getElementById('confirmation-modal-backdrop');
         const confirmationModalTitle = document.getElementById('confirmation-modal-title');
         const confirmationModalPrompt = document.getElementById('confirmation-modal-prompt');
         const confirmationModalCancelBtn = document.getElementById('confirmation-modal-cancel-btn');
         const confirmationModalConfirmBtn = document.getElementById('confirmation-modal-confirm-btn');
 
-        // NEW: Site Management
-        const broadcastBanner = document.getElementById('broadcast-banner');
-        const broadcastInput = document.getElementById('broadcast-input');
-        const broadcastSave = document.getElementById('broadcast-save');
-        const broadcastClear = document.getElementById('broadcast-clear');
+        // Toast
         const toastContainer = document.getElementById('toast-container');
         
-        // NEW: Analytics (REMOVED)
-        /*
-        const statTotalPickedup = document.getElementById('stat-total-pickedup');
-        const statTotalInQueue = document.getElementById('stat-total-in-queue');
-        const statAvgWaitTime = document.getElementById('stat-avg-wait-time');
-        const pickupChartCanvas = document.getElementById('pickup-chart').getContext('2d');
-        let pickupChart = null; // Chart.js instance
-        */
-
         // --- App State ---
-        let passwordModalAction = null; 
         let confirmationModalAction = null;
         let stagedSiblingGroup = []; 
-        let stagedForGroupBuilding = [];
-        // NEW: Local state for data
+        // Roster and Groups are needed for search
         let currentRoster = []; 
         let currentPermanentGroups = [];
         let currentQ1 = [];
@@ -1056,7 +865,7 @@
         // --- Firebase Globals ---
         let app, auth, db, userId;
         let q1ColRef, q2ColRef, q3ColRef, rosterColRef, pickedupColRef;
-        let permanentGroupsColRef, broadcastDocRef;
+        let permanentGroupsColRef;
         const appId = firebaseConfig.projectId || 'default-carline-app';
 
         // --- Collection Names ---
@@ -1066,15 +875,13 @@
         const PICKEDUP_COLLECTION = 'queue_pickedup';
         const ROSTER_COLLECTION = 'ROSTER';
         const PERMANENT_GROUPS_COLLECTION = 'permanent_groups';
-        const CONFIG_COLLECTION = 'site_config'; // NEW
-        const BROADCAST_DOC = 'broadcast'; // NEW
+        // Config collection removed
 
-        // --- NEW: SVG Icons ---
+        // --- SVG Icons ---
         const icons = {
             star: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.846 5.673a1 1 0 00.95.69h5.969c.969 0 1.371 1.24.588 1.81l-4.83 3.51a1 1 0 00-.364 1.118l1.846 5.673c.3.921-.755 1.688-1.54 1.118l-4.83-3.51a1 1 0 00-1.175 0l-4.83 3.51c-.784.57-1.838-.197-1.54-1.118l1.846-5.673a1 1 0 00-.364-1.118L2.14 11.099c-.783-.57-.38-1.81.588-1.81h5.97a1 1 0 00.95-.69L11.049 2.927z"></path></svg>`,
             pencil: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>`,
             trash: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>`,
-            edit: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.536l12.232-12.232z"></path></svg>`,
             remove: `<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`,
             reAdd: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-4 4v6m0-6V7m0 0h.01M12 7h.01M12 7V3l-3 4m3-4l3 4"></path></svg>`
         };
@@ -1094,11 +901,6 @@
             return temp.innerHTML;
         }
 
-        /**
-         * NEW: Displays a toast notification.
-         * @param {string} message - The message to display.
-         * @param {boolean} [isError=false] - True for error (red), false for success (green).
-         */
         function showToast(message, isError = false) {
             const toast = document.createElement('div');
             toast.className = `toast ${isError ? 'error' : 'success'}`;
@@ -1172,25 +974,6 @@
             `).join('');
         }
         
-        function renderGroupBuilderList() {
-            if (stagedForGroupBuilding.length === 0) {
-                adminGroupBuilderList.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">No students staged for group.</p>`;
-                return;
-            }
-            adminGroupBuilderList.innerHTML = stagedForGroupBuilding.map((student, index) => {
-                const fullName = `${student.firstName} ${student.lastName}`;
-                return `
-                <div class="sibling-item">
-                    <span style="font-weight: 500;">${sanitize(fullName)} (Gr: ${sanitize(student.grade)})</span>
-                    <button class="remove-staged-builder-btn" data-index="${index}" title="Remove" style="background: none; border: none; color: var(--red); cursor: pointer;">
-                        ${icons.remove}
-                    </button>
-                </div>
-                `;
-            }).join('');
-        }
-
-        // NEW: Renders flag icons
         function renderFlagIcons(flags) {
             if (!flags) return '';
             let iconsHtml = '';
@@ -1204,7 +987,6 @@
         }
 
         function renderQueueTable(tableBodyEl, countEl, queueName, docs) {
-            // currentQ1 = docs; // Store for analytics (REMOVED)
             if (queueName === Q1_COLLECTION) currentQ1 = docs;
             else if (queueName === Q3_COLLECTION) currentQ3 = docs;
 
@@ -1243,7 +1025,7 @@
         }
 
         function renderSiblingTable(docs) {
-            currentQ2 = docs; // Store for analytics
+            currentQ2 = docs; 
             docs.sort((a, b) => (a.addedAt?.seconds || 0) - (b.addedAt?.seconds || 0));
             
             let studentCount = docs.reduce((count, doc) => count + (doc.isGroup ? doc.students.length : 1), 0);
@@ -1313,7 +1095,6 @@
             }).join('');
         }
 
-        // NEW: Calculate wait time string
         function calculateWaitTime(addedAt, pickedUpAt) {
             if (!addedAt || !pickedUpAt) return '--:--';
             try {
@@ -1332,7 +1113,7 @@
         }
 
         function renderPickedUpTable(docs) {
-            currentPickedUpList = docs; // Store for analytics
+            currentPickedUpList = docs; 
             docs.sort((a, b) => (b.pickedUpAt?.seconds || 0) - (a.pickedUpAt?.seconds || 0));
             pickedUpCount.textContent = `(${docs.length})`;
             
@@ -1349,7 +1130,6 @@
                     <td>${formatTimestamp(student.pickedUpAt)}</td>
                     <td>${calculateWaitTime(student.addedAt, student.pickedUpAt)}</td>
                     <td class="actions-cell">
-                        <!-- NEW: Re-add Button -->
                         <button class="action-btn btn-re-add" title="Re-add to Queue"
                                 data-action="re-add"
                                 data-id="${student.id}"
@@ -1370,166 +1150,81 @@
             }).join('');
         }
         
-        function renderAdminRoster(roster) {
-            if (roster.length === 0) {
-                adminRosterList.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">Roster is empty.</p>`;
-                return;
-            }
-            adminRosterList.innerHTML = roster.map(student => `
-                <div class="roster-item">
-                    <div>
-                        <span style="font-weight: 500;">${sanitize(student.firstName)} ${sanitize(student.lastName)}</span>
-                        <span style="color: var(--fg-gray); font-size: 0.8rem; margin-left: 4px;">(Gr: ${student.grade})</span>
-                        ${renderFlagIcons(student.flags)}
-                    </div>
-                    <div class="roster-item-actions">
-                        <button class="action-btn btn-blue" title="Edit" data-action="edit-roster-student" data-id="${student.id}">
-                            ${icons.edit}
-                        </button>
-                        <button class="action-btn btn-delete" title="Delete" data-action="delete-roster-student" data-id="${student.id}">
-                            ${icons.trash}
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
+        // NEW: renderClassroomView (copied from index.html)
+        /**
+         * Renders the classroom view (a single, dense list of all queued students).
+         */
+        function renderClassroomView() {
+            let allStudents = [];
 
-        function renderPermanentGroups(groups) {
-            if (groups.length === 0) {
-                adminPermanentGroupList.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">No permanent groups found.</p>`;
-                return;
-            }
-            adminPermanentGroupList.innerHTML = groups.map(group => {
-                const studentNames = group.students.map(studentId => {
-                    const student = currentRoster.find(s => s.id === studentId);
-                    return student ? `${student.firstName} ${student.lastName}` : 'Unknown Student';
+            // 1. Get Q1 students
+            currentQ1.forEach(student => {
+                allStudents.push({
+                    name: student.name,
+                    grade: student.grade,
+                    isHighlighted: student.isHighlighted || false,
+                    flags: student.flags || {} // Pass flags
                 });
+            });
 
+            // 2. Get Q3 students
+            currentQ3.forEach(student => {
+                allStudents.push({
+                    name: student.name,
+                    grade: student.grade,
+                    isHighlighted: student.isHighlighted || false,
+                    flags: student.flags || {} // Pass flags
+                });
+            });
+
+            // 3. Get Q2 students (flatten groups)
+            currentQ2.forEach(doc => {
+                if (doc.isGroup) {
+                    doc.students.forEach(student => {
+                        allStudents.push({
+                            name: student.name,
+                            grade: student.grade,
+                            isHighlighted: student.isHighlighted || false,
+                            flags: student.flags || {} // Pass flags
+                        });
+                    });
+                } else {
+                    // Single student in Q2
+                    allStudents.push({
+                        name: doc.name,
+                        grade: doc.grade,
+                        isHighlighted: doc.isHighlighted || false,
+                        flags: doc.flags || {} // Pass flags
+                    });
+                }
+            });
+
+            // 4. Update total count
+            classroomTotalCount.textContent = `(${allStudents.length})`;
+
+            // 5. Sort alphabetically
+            allStudents.sort((a, b) => a.name.localeCompare(b.name));
+
+            // 6. Render HTML
+            if (allStudents.length === 0) {
+                classroomListContainer.innerHTML = `<p style="text-align: center; color: var(--fg-gray); font-size: 1.2rem; padding: 2rem 0;">No students in queue.</p>`;
+                return;
+            }
+
+            classroomListContainer.innerHTML = allStudents.map(student => {
+                const highlightClass = student.isHighlighted ? 'highlighted' : '';
                 return `
-                <div class="permanent-group-item">
-                    <div>
-                        <span style="font-weight: 500;">${sanitize(group.groupName)}</span>
-                        <ul>
-                            ${studentNames.map(name => `<li>${sanitize(name)}</li>`).join('')}
-                        </ul>
-                    </div>
-                    <button class="action-btn btn-delete" title="Delete Group" data-action="delete-permanent-group" data-id="${group.id}">
-                        ${icons.trash}
-                    </button>
+                <div class="classroom-list-item ${highlightClass}">
+                    ${sanitize(student.name)}
+                    <span class="grade">(${sanitize(student.grade)})</span>
+                    ${renderFlagIcons(student.flags)}
                 </div>
                 `;
             }).join('');
         }
-        
-        /**
-         * NEW: Renders the analytics tab. (REMOVED)
-         */
-        /*
-        function renderAnalytics() {
-            // 1. Calculate Stats
-            const totalPickedUp = currentPickedUpList.length;
-            const totalInQ1 = currentQ1.length;
-            const totalInQ2 = currentQ2.reduce((count, doc) => count + (doc.isGroup ? doc.students.length : 1), 0);
-            const totalInQ3 = currentQ3.length; // Assuming q3 docs are stored
-            const totalInQueue = totalInQ1 + totalInQ2 + totalInQ3;
-
-            // Calculate Avg Wait Time
-            let totalWaitSeconds = 0;
-            let waitedStudents = 0;
-            currentPickedUpList.forEach(doc => {
-                if (doc.addedAt && doc.pickedUpAt) {
-                    try {
-                        const added = doc.addedAt.toDate();
-                        const pickedUp = doc.pickedUpAt.toDate();
-                        const diffSecs = (pickedUp.getTime() - added.getTime()) / 1000;
-                        if (diffSecs > 0) {
-                            totalWaitSeconds += diffSecs;
-                            waitedStudents++;
-                        }
-                    } catch(e) {}
-                }
-            });
-            
-            const avgWaitSeconds = waitedStudents > 0 ? totalWaitSeconds / waitedStudents : 0;
-            const avgWaitMins = Math.floor(avgWaitSeconds / 60);
-            const avgWaitSecs = Math.floor(avgWaitSeconds % 60);
-            const avgWaitString = waitedStudents > 0 ? `${avgWaitMins.toString().padStart(2, '0')}:${avgWaitSecs.toString().padStart(2, '0')}` : '--:--';
-
-            // 2. Update DOM
-            statTotalPickedup.textContent = totalPickedUp;
-            statTotalInQueue.textContent = totalInQueue;
-            statAvgWaitTime.textContent = avgWaitString;
-
-            // 3. Render Chart
-            const pickupsByHour = {}; // 0-23
-            for (let i = 0; i < 24; i++) { pickupsByHour[i] = 0; }
-
-            currentPickedUpList.forEach(doc => {
-                if (doc.pickedUpAt) {
-                    try {
-                        const hour = doc.pickedUpAt.toDate().getHours();
-                        pickupsByHour[hour]++;
-                    } catch(e) {}
-                }
-            });
-
-            const chartLabels = Object.keys(pickupsByHour).map(h => `${h}:00`);
-            const chartData = Object.values(pickupsByHour);
-
-            // Filter data to only show hours with activity (or typical school hours)
-            // Let's filter for 6 AM to 8 PM (6 to 20)
-            const activeLabels = chartLabels.slice(6, 21);
-            const activeData = chartData.slice(6, 21);
 
 
-            if (pickupChart) {
-                pickupChart.destroy();
-            }
-            pickupChart = new Chart(pickupChartCanvas, {
-                type: 'bar',
-                data: {
-                    labels: activeLabels,
-                    datasets: [{
-                        label: 'Pickups',
-                        data: activeData,
-                        backgroundColor: 'rgba(131, 165, 152, 0.6)', // var(--blue)
-                        borderColor: 'rgba(131, 165, 152, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: 'var(--fg-gray)',
-                                stepSize: 1
-                            },
-                            grid: {
-                                color: 'var(--border-color)'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                color: 'var(--fg-gray)'
-                            },
-                            grid: {
-                                color: 'var(--border-color)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
-                }
-            });
-        }
-        */
-
+        // Admin render functions REMOVED
 
         // --- Firebase Actions ---
 
@@ -1540,7 +1235,6 @@
             else if (queueNum == 3) collection = q3ColRef;
             else return;
 
-            // NEW: Get flags from roster if rosterId is provided
             let flags = {};
             if (rosterId) {
                 const student = currentRoster.find(s => s.id === rosterId);
@@ -1554,7 +1248,7 @@
                     name: name,
                     grade: grade,
                     rosterId: rosterId || null,
-                    flags: flags, // NEW
+                    flags: flags, 
                     addedAt: serverTimestamp(),
                     addedBy: userId,
                     isHighlighted: false,
@@ -1571,7 +1265,6 @@
             if (studentGroup.length === 0) return;
 
             const studentsForFirestore = studentGroup.map(student => {
-                // NEW: Get flags for each student in group
                 let flags = {};
                 if (student.rosterId) {
                     const rosterStudent = currentRoster.find(s => s.id === student.rosterId);
@@ -1617,7 +1310,7 @@
                     name: `${student.firstName} ${student.lastName}`,
                     grade: student.grade,
                     rosterId: student.id,
-                    flags: student.flags || {} // NEW: Pass flags
+                    flags: student.flags || {} 
                 };
             }).filter(s => s !== null);
 
@@ -1651,7 +1344,7 @@
                                 name: student.name,
                                 grade: student.grade,
                                 rosterId: student.rosterId || null,
-                                addedAt: studentData.addedAt || null, // NEW: Pass addedAt
+                                addedAt: studentData.addedAt || null, 
                                 pickedUpAt: serverTimestamp(),
                                 addedBy: userId
                             });
@@ -1662,7 +1355,7 @@
                             name: studentData.name,
                             grade: studentData.grade,
                             rosterId: studentData.rosterId || null,
-                            addedAt: studentData.addedAt || null, // NEW: Pass addedAt
+                            addedAt: studentData.addedAt || null, 
                             pickedUpAt: serverTimestamp(),
                             addedBy: userId
                         });
@@ -1693,7 +1386,7 @@
                     name: studentToDismiss.name,
                     grade: studentToDismiss.grade,
                     rosterId: studentToDismiss.rosterId || null,
-                    addedAt: groupData.addedAt || null, // NEW: Pass group's addedAt
+                    addedAt: groupData.addedAt || null, 
                     pickedUpAt: serverTimestamp(),
                     addedBy: userId
                 });
@@ -1712,36 +1405,7 @@
             }
         }
 
-        async function clearPickedUpList() {
-            try {
-                const snapshot = await getDocs(pickedupColRef);
-                const deletePromises = snapshot.docs.map(doc => deleteDoc(doc.ref));
-                await Promise.all(deletePromises);
-                showToast(`"Picked Up" list cleared.`, false);
-            } catch (error) {
-                console.error("Error clearing picked up list: ", error);
-                showToast(`Error clearing list: ${error.message}`, true);
-            }
-        }
-        
-        async function clearAllQueues() {
-            const collectionsToClear = [q1ColRef, q2ColRef, q3ColRef];
-            try {
-                const deletePromises = [];
-                for (const colRef of collectionsToClear) {
-                    const snapshot = await getDocs(colRef);
-                    snapshot.docs.forEach(doc => {
-                        deletePromises.push(deleteDoc(doc.ref));
-                    });
-                }
-                await Promise.all(deletePromises);
-                showToast(`All queues cleared.`, false);
-            } catch (error)
-            {
-                console.error("Error clearing all queues: ", error);
-                showToast(`Error clearing queues: ${error.message}`, true);
-            }
-        }
+        // Admin clear functions REMOVED
 
         async function removePickedUpStudent(docId) {
             try {
@@ -1787,7 +1451,6 @@
             }
         }
         
-        // NEW: Replaced prompt with Modal
         function openNoteModal(queue, docId, studentIndex, currentNote) {
             modalNoteQueue.value = queue;
             modalNoteDocId.value = docId;
@@ -1835,141 +1498,14 @@
             }
         }
 
-        async function addRosterStudent(firstName, lastName, grade, flags) {
-            try {
-                await addDoc(rosterColRef, {
-                    firstName: firstName,
-                    lastName: lastName,
-                    grade: grade,
-                    flags: flags // NEW
-                });
-                adminFirstName.value = '';
-                adminLastName.value = '';
-                adminGrade.value = '';
-                adminFlagAllergy.checked = false;
-                adminFlagAssistance.checked = false;
-                showToast(`${firstName} ${lastName} added to roster.`, false);
-            } catch (error) {
-                console.error("Error adding student to roster: ", error);
-                showToast(`Error adding student: ${error.message}`, true);
-            }
-        }
-
-        async function updateRosterStudent(docId, firstName, lastName, grade, flags) {
-            try {
-                const docRef = doc(db, rosterColRef.path, docId);
-                await updateDoc(docRef, {
-                    firstName: firstName,
-                    lastName: lastName,
-                    grade: grade,
-                    flags: flags // NEW
-                });
-                showToast(`Student updated.`, false);
-            } catch (error) {
-                console.error("Error updating roster student: ", error);
-                showToast(`Error updating: ${error.message}`, true);
-            }
-        }
-
-        async function deleteRosterStudent(docId) {
-             try {
-                await deleteDoc(doc(db, rosterColRef.path, docId));
-                showToast(`Student deleted from roster.`, false);
-            } catch (error) {
-                console.error("Error deleting student: ", error);
-                showToast(`Error deleting: ${error.message}`, true);
-            }
-        }
-
-        async function savePermanentGroup(groupName, studentIds) {
-            if (!groupName || studentIds.length < 2) {
-                showToast("Group must have a name and at least 2 students.", true);
-                return;
-            }
-            try {
-                await addDoc(permanentGroupsColRef, {
-                    groupName: groupName,
-                    students: studentIds
-                });
-                adminGroupNameInput.value = '';
-                stagedForGroupBuilding = [];
-                renderGroupBuilderList();
-                showToast(`Group "${groupName}" saved.`, false);
-            } catch (error) {
-                console.error("Error saving permanent group: ", error);
-                showToast(`Error saving group: ${error.message}`, true);
-            }
-        }
-
-        async function deletePermanentGroup(docId) {
-            try {
-                await deleteDoc(doc(db, permanentGroupsColRef.path, docId));
-                showToast(`Permanent group deleted.`, false);
-            } catch (error) {
-                console.error("Error deleting permanent group: ", error);
-                showToast(`Error deleting group: ${error.message}`, true);
-            }
-        }
-
+        // Admin roster/group functions REMOVED
 
         // --- Modal Functions ---
         
-        function openPasswordModal(action, promptText, colorClass) {
-            passwordModalAction = action;
-            passwordModalPrompt.textContent = promptText;
-            modalConfirmBtn.className = "btn";
-            modalConfirmBtn.classList.add(colorClass);
-            modalPasswordInput.value = '';
-            modalError.style.display = 'none';
-            passwordModalBackdrop.style.display = 'flex';
-            modalPasswordInput.focus();
-        }
-        function closePasswordModal() {
-            passwordModalBackdrop.style.display = 'none';
-            passwordModalAction = null;
-        }
+        // Password Modal functions REMOVED
+        
+        // Edit Student Modal functions REMOVED
 
-        function openEditStudentModal(docId) {
-            const student = currentRoster.find(s => s.id === docId);
-            if (!student) return;
-
-            modalEditStudentId.value = docId;
-            modalEditFirstName.value = student.firstName;
-            modalEditLastName.value = student.lastName;
-            modalEditGrade.value = student.grade;
-            // NEW: Populate flags
-            modalEditFlagAllergy.checked = student.flags?.allergy || false;
-            modalEditFlagAssistance.checked = student.flags?.assistance || false;
-            
-            modalEditError.style.display = 'none';
-            editStudentModalBackdrop.style.display = 'flex';
-            modalEditFirstName.focus();
-        }
-        function closeEditStudentModal() {
-            editStudentModalBackdrop.style.display = 'none';
-        }
-
-        async function handleEditStudentSave() {
-            const docId = modalEditStudentId.value;
-            const fName = modalEditFirstName.value.trim();
-            const lName = modalEditLastName.value.trim();
-            const grade = modalEditGrade.value.trim().toUpperCase();
-            // NEW: Get flags
-            const flags = {
-                allergy: modalEditFlagAllergy.checked,
-                assistance: modalEditFlagAssistance.checked
-            };
-
-            if (!docId || !fName || !lName || !grade) {
-                modalEditError.style.display = 'block';
-                return;
-            }
-
-            await updateRosterStudent(docId, fName, lName, grade, flags);
-            closeEditStudentModal();
-        }
-
-        // NEW: Re-add Modal Functions
         function openReAddModal(docId, name, grade, rosterId) {
             modalReAddDocId.value = docId;
             modalReAddName.value = name;
@@ -1987,9 +1523,7 @@
             const grade = modalReAddGrade.value;
             const rosterId = modalReAddRosterId.value;
 
-            // Re-add to queue
             await addStudentToQueue(queueNum, name, grade, rosterId);
-            // Remove from picked up
             await removePickedUpStudent(docId);
             
             closeReAddModal();
@@ -2007,6 +1541,7 @@
             confirmationModalAction = null;
         }
 
+        // SIMPLIFIED: No password check
         async function handleConfirmationConfirm() {
             if (!confirmationModalAction) return;
 
@@ -2014,49 +1549,16 @@
             
             if (action === 'removePickedUp') {
                 await removePickedUpStudent(docId);
-                closeConfirmationModal();
-                return; 
-            }
-            if (action === 'dismissGroupStudent') {
+            } else if (action === 'dismissGroupStudent') {
                 await dismissGroupStudent(queue, docId, studentIndex);
-                closeConfirmationModal();
-                return; 
+            } else if (action === 'dismissQueue') {
+                await dismissStudent(queue, docId);
             }
             
-            openPasswordModal(
-                { ...confirmationModalAction, originalAction: confirmationModalAction.action }, 
-                `Enter password to confirm: ${confirmationModalTitle.textContent}`,
-                'btn-red'
-            );
-            closeConfirmationModal(); 
+            closeConfirmationModal();
         }
         
-        async function handlePasswordConfirm() {
-            const password = modalPasswordInput.value;
-            if (password !== 'doral') {
-                modalError.style.display = 'block';
-                modalError.textContent = "Incorrect password.";
-                return;
-            }
-            
-            if (!passwordModalAction) return;
-            
-            const { originalAction, docId, queue } = passwordModalAction;
-            
-            if (originalAction === 'dismissQueue') {
-                await dismissStudent(queue, docId);
-            } else if (action === 'clearPickedUp') {
-                await clearPickedUpList();
-            } else if (action === 'clearAllQueues') {
-                await clearAllQueues();
-            } else if (originalAction === 'deleteRosterStudent') {
-                await deleteRosterStudent(docId);
-            } else if (originalAction === 'deletePermanentGroup') {
-                await deletePermanentGroup(docId);
-            }
-            
-            closePasswordModal();
-        }
+        // handlePasswordConfirm REMOVED
 
         // --- Firebase Setup ---
         async function setupFirebase() {
@@ -2094,36 +1596,36 @@
             q2ColRef = collection(db, `/artifacts/${appId}/public/data/${Q2_COLLECTION}`);
             q3ColRef = collection(db, `/artifacts/${appId}/public/data/${Q3_COLLECTION}`);
             pickedupColRef = collection(db, `/artifacts/${appId}/public/data/${PICKEDUP_COLLECTION}`);
+            // Roster and Groups are still needed for search
             rosterColRef = collection(db, `/artifacts/${appId}/public/data/${ROSTER_COLLECTION}`);
             permanentGroupsColRef = collection(db, `/artifacts/${appId}/public/data/${PERMANENT_GROUPS_COLLECTION}`);
-            // NEW: Broadcast listener
-            broadcastDocRef = doc(db, `/artifacts/${appId}/public/data/${CONFIG_COLLECTION}/${BROADCAST_DOC}`);
+            // Broadcast listener REMOVED
 
             // Listeners
             onSnapshot(query(q1ColRef), (snapshot) => {
                 currentQ1 = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderQueueTable(q1TableBody, q1Count, Q1_COLLECTION, currentQ1);
-                // if (analyticsView.style.display !== 'none') renderAnalytics(); // REMOVED
+                if (classroomView.style.display !== 'none') renderClassroomView(); // NEW
             }, (error) => console.error("Q1 Snapshot Error:", error));
 
             onSnapshot(query(q2ColRef), (snapshot) => {
                 currentQ2 = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderSiblingTable(currentQ2);
-                // if (analyticsView.style.display !== 'none') renderAnalytics(); // REMOVED
+                if (classroomView.style.display !== 'none') renderClassroomView(); // NEW
             }, (error) => console.error("Q2 Snapshot Error:", error));
 
             onSnapshot(query(q3ColRef), (snapshot) => {
                 currentQ3 = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderQueueTable(q3TableBody, q3Count, Q3_COLLECTION, currentQ3); // Assumes renderQueueTable for Q3
-                // if (analyticsView.style.display !== 'none') renderAnalytics(); // REMOVED
+                renderQueueTable(q3TableBody, q3Count, Q3_COLLECTION, currentQ3); 
+                if (classroomView.style.display !== 'none') renderClassroomView(); // NEW
             }, (error) => console.error("Q3 Snapshot Error:", error));
             
             onSnapshot(query(pickedupColRef), (snapshot) => {
                 currentPickedUpList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderPickedUpTable(currentPickedUpList);
-                // if (analyticsView.style.display !== 'none') renderAnalytics(); // REMOVED
             }, (error) => console.error("PickedUp Snapshot Error:", error));
 
+            // Roster listener (needed for search)
             onSnapshot(query(rosterColRef), (snapshot) => {
                 const students = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 students.sort((a, b) => {
@@ -2137,35 +1639,15 @@
                 if (searchInput.value.trim().length > 0) {
                     filterStudents(searchInput.value.trim());
                 }
-                
-                if (adminView.style.display !== 'none') {
-                    renderAdminRoster(currentRoster);
-                    renderPermanentGroups(currentPermanentGroups);
-                }
             }, (error) => console.error("Roster Snapshot Error:", error));
             
+            // Permanent Groups listener (needed for search)
             onSnapshot(query(permanentGroupsColRef), (snapshot) => {
                 currentPermanentGroups = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 currentPermanentGroups.sort((a, b) => a.groupName.localeCompare(b.groupName));
-                
-                if (adminView.style.display !== 'none') {
-                    renderPermanentGroups(currentPermanentGroups);
-                }
             }, (error) => console.error("Permanent Groups Snapshot Error:", error));
 
-            // NEW: Broadcast listener
-            onSnapshot(broadcastDocRef, (doc) => {
-                if (doc.exists() && doc.data().message) {
-                    broadcastBanner.textContent = doc.data().message;
-                    broadcastBanner.style.display = 'block';
-                    document.body.style.paddingTop = '2.5rem';
-                    document.querySelector('header').style.top = '2.5rem';
-                } else {
-                    broadcastBanner.style.display = 'none';
-                    document.body.style.paddingTop = '0';
-                    document.querySelector('header').style.top = '0';
-                }
-            }, (error) => console.error("Broadcast Snapshot Error:", error));
+            // Broadcast listener REMOVED
         }
 
         function filterStudents(searchText) {
@@ -2183,79 +1665,31 @@
             renderSearchResults(filteredStudents, filteredGroups);
         }
 
-        function filterAdminGroupSearch(searchText) {
-            const lowerCaseSearch = searchText.toLowerCase();
-            
-            if (searchText.length === 0) {
-                adminGroupSearchResults.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">Type above to find students...</p>`;
-                return;
-            }
-            
-            const filtered = currentRoster.filter(student => 
-                `${student.firstName} ${student.lastName}`.toLowerCase().includes(lowerCaseSearch)
-            );
-            
-            if (filtered.length === 0) {
-                adminGroupSearchResults.innerHTML = `<p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">No students found.</p>`;
-                return;
-            }
-            adminGroupSearchResults.innerHTML = filtered.map(student => {
-                const fullName = `${student.firstName} ${student.lastName}`;
-                const isStaged = stagedForGroupBuilding.find(s => s.id === student.id);
-                return `
-                <div class="search-item">
-                    <div>
-                        <span style="font-weight: 500;">${fullName}</span>
-                        <span style="color: var(--fg-gray); font-size: 0.8rem; margin-left: 4px;">(Gr: ${student.grade})</span>
-                    </div>
-                    <button class="btn btn-green" data-action="stage-for-builder" data-id="${student.id}" ${isStaged ? 'disabled' : ''} style="padding: 4px 6px; font-size: 0.75rem;">
-                        ${isStaged ? 'Added' : 'Add'}
-                    </button>
-                </div>
-                `;
-            }).join('');
-        }
-
+        // filterAdminGroupSearch REMOVED
+        
         // --- Event Listeners ---
         document.addEventListener('DOMContentLoaded', () => {
 
             setupFirebase();
             
-            // --- Tab Toggling Listeners ---
+            // Phone mode listeners REMOVED (it's hardcoded)
+            
+            // NEW: Tab Toggling Listeners
             queuesTabBtn.addEventListener('click', () => {
                 queuesView.style.display = 'block';
-                adminView.style.display = 'none';
-                // analyticsView.style.display = 'none'; // REMOVED
+                classroomView.style.display = 'none';
                 queuesTabBtn.classList.add('active');
-                adminTabBtn.classList.remove('active');
-                // analyticsTabBtn.classList.remove('active'); // REMOVED
+                classroomTabBtn.classList.remove('active');
             });
-            
-            adminTabBtn.addEventListener('click', () => {
-                queuesView.style.display = 'none';
-                adminView.style.display = 'block';
-                // analyticsView.style.display = 'none'; // REMOVED
-                queuesTabBtn.classList.remove('active');
-                adminTabBtn.classList.add('active');
-                // analyticsTabBtn.classList.remove('active'); // REMOVED
-                // Render admin lists when tab is clicked
-                renderAdminRoster(currentRoster); 
-                renderPermanentGroups(currentPermanentGroups);
-            });
-            
-            /* (REMOVED)
-            analyticsTabBtn.addEventListener('click', () => {
-                queuesView.style.display = 'none';
-                adminView.style.display = 'none';
-                analyticsView.style.display = 'block';
-                queuesTabBtn.classList.remove('active');
-                adminTabBtn.classList.remove('active');
-                analyticsTabBtn.classList.add('active');
-                // Render analytics when tab is clicked
-                renderAnalytics(); 
-            });
-            */
 
+            classroomTabBtn.addEventListener('click', () => {
+                queuesView.style.display = 'none';
+                classroomView.style.display = 'block';
+                queuesTabBtn.classList.remove('active');
+                classroomTabBtn.classList.add('active');
+                // Render the view when tab is clicked
+                renderClassroomView(); 
+            });
 
             // --- Add Student Section Listeners ---
             searchInput.addEventListener('input', (e) => filterStudents(e.target.value));
@@ -2267,14 +1701,14 @@
                 const { queue, name, grade, action, groupId, rosterId } = target.dataset;
 
                 if (action === 'stage-group') {
-                    stagedSiblingGroup.push({ name, grade, rosterId }); // NEW: Store rosterId
+                    stagedSiblingGroup.push({ name, grade, rosterId }); 
                     renderStagedGroup();
                 } else if (action === 'add-permanent-group') {
                     addPermanentGroupToQueue(groupId);
                     searchInput.value = '';
                     filterStudents('');
                 } else if (name && grade && queue) {
-                    addStudentToQueue(queue, name, grade, rosterId); // NEW: Pass rosterId
+                    addStudentToQueue(queue, name, grade, rosterId); 
                     searchInput.value = '';
                     filterStudents('');
                 }
@@ -2302,128 +1736,12 @@
                 if (name) { addStudentToQueue(3, name, 'N/A'); manualNameInput.value = ''; }
             });
             
-            // --- Admin Panel Listeners ---
-            clearPickedUpBtn.addEventListener('click', () => {
-                openPasswordModal(
-                    { action: 'clearPickedUp' },
-                    "To reset the 'Picked Up' list, enter admin password.",
-                    'btn-orange'
-                );
-            });
-
-            clearAllBtn.addEventListener('click', () => {
-                openPasswordModal(
-                    { action: 'clearAllQueues' },
-                    "To clear all 3 LIVE queues, enter admin password.",
-                    'btn-red'
-                );
-            });
-
-            adminAddStudentBtn.addEventListener('click', () => {
-                const fName = adminFirstName.value.trim();
-                const lName = adminLastName.value.trim();
-                const grade = adminGrade.value.trim().toUpperCase();
-                // NEW: Get flags
-                const flags = {
-                    allergy: adminFlagAllergy.checked,
-                    assistance: adminFlagAssistance.checked
-                };
-                
-                if (fName && lName && grade) {
-                    addRosterStudent(fName, lName, grade, flags);
-                } else {
-                    showToast("All fields required to add student.", true);
-                    if (!fName) adminFirstName.style.borderColor = 'var(--red)';
-                    if (!lName) adminLastName.style.borderColor = 'var(--red)';
-                    if (!grade) adminGrade.style.borderColor = 'var(--red)';
-                }
-            });
-            adminFirstName.addEventListener('input', () => adminFirstName.style.borderColor = 'var(--border-color)');
-            adminLastName.addEventListener('input', () => adminLastName.style.borderColor = 'var(--border-color)');
-            adminGrade.addEventListener('input', () => adminGrade.style.borderColor = 'var(--border-color)');
-
-            
-            adminRosterList.addEventListener('click', (e) => {
-                const btn = e.target.closest('.action-btn');
-                if (!btn) return;
-                const { action, id } = btn.dataset;
-                
-                if (action === 'delete-roster-student') {
-                    openConfirmationModal(
-                        'Delete Roster Student?',
-                        'Permanently delete this student from the roster? This cannot be undone.',
-                        { action: 'deleteRosterStudent', docId: id }
-                    );
-                } else if (action === 'edit-roster-student') {
-                    openEditStudentModal(id);
-                }
-            });
-
-            // Admin Group Builder
-            adminGroupSearchInput.addEventListener('input', (e) => filterAdminGroupSearch(e.target.value));
-            adminGroupSearchResults.addEventListener('click', (e) => {
-                const addBtn = e.target.closest('[data-action="stage-for-builder"]');
-                if (addBtn && !addBtn.disabled) {
-                    const student = currentRoster.find(s => s.id === addBtn.dataset.id);
-                    if (student) {
-                        stagedForGroupBuilding.push(student);
-                        renderGroupBuilderList();
-                        addBtn.disabled = true;
-                        addBtn.textContent = 'Added';
-                    }
-                }
-            });
-            adminGroupBuilderList.addEventListener('click', (e) => {
-                const removeBtn = e.target.closest('.remove-staged-builder-btn');
-                if (removeBtn) {
-                    stagedForGroupBuilding.splice(parseInt(removeBtn.dataset.index, 10), 1);
-                    renderGroupBuilderList();
-                    filterAdminGroupSearch(adminGroupSearchInput.value);
-                }
-            });
-            adminSaveGroupBtn.addEventListener('click', () => {
-                const groupName = adminGroupNameInput.value.trim();
-                const studentIds = stagedForGroupBuilding.map(s => s.id);
-                savePermanentGroup(groupName, studentIds);
-            });
-            adminPermanentGroupList.addEventListener('click', (e) => {
-                const deleteBtn = e.target.closest('[data-action="delete-permanent-group"]');
-                if (deleteBtn) {
-                    openConfirmationModal(
-                        'Delete Permanent Group?',
-                        'This will delete the group. It will not delete the students from the roster.',
-                        { action: 'deletePermanentGroup', docId: deleteBtn.dataset.id }
-                    );
-                }
-            });
-
-            // NEW: Broadcast Listeners
-            broadcastSave.addEventListener('click', async () => {
-                const message = broadcastInput.value.trim();
-                if (message) {
-                    try {
-                        await setDoc(broadcastDocRef, { message: message });
-                        showToast("Broadcast message saved.", false);
-                    } catch (e) {
-                        showToast(`Error saving: ${e.message}`, true);
-                    }
-                }
-            });
-            broadcastClear.addEventListener('click', async () => {
-                try {
-                    await setDoc(broadcastDocRef, { message: "" });
-                    broadcastInput.value = '';
-                    showToast("Broadcast message cleared.", false);
-                } catch (e) {
-                    showToast(`Error clearing: ${e.message}`, true);
-                }
-            });
+            // Admin Panel Listeners REMOVED
 
             // --- Delegated clicks for all TABLE actions ---
             document.body.addEventListener('click', async (e) => {
                 const target = e.target.closest('.action-btn');
                 if (!target) return;
-                if (target.closest('#admin-roster-list')) return; // Handled by other listener
 
                 const { action, id, name, queue, currentNote, grade, rosterId } = target.dataset;
                 const studentIndex = target.dataset.index ? parseInt(target.dataset.index, 10) : null;
@@ -2451,28 +1769,24 @@
                 } else if (action === 'highlight-group-student') {
                     toggleGroupStudentHighlight(queue, id, studentIndex);
                 } else if (action === 'add-note' || action === 'add-note-group') {
-                    // NEW: Open Note Modal
                     openNoteModal(queue, id, studentIndex, currentNote);
                 } else if (action === 're-add') {
-                    // NEW: Open Re-add Modal
                     openReAddModal(id, name, grade, rosterId);
                 }
             });
             
             // --- Modal Listeners ---
-            modalCancelBtn.addEventListener('click', closePasswordModal);
-            modalConfirmBtn.addEventListener('click', handlePasswordConfirm);
+            // Password modal listeners REMOVED
             confirmationModalCancelBtn.addEventListener('click', closeConfirmationModal);
             confirmationModalConfirmBtn.addEventListener('click', handleConfirmationConfirm);
             
-            modalEditCancelBtn.addEventListener('click', closeEditStudentModal);
-            modalEditSaveBtn.addEventListener('click', handleEditStudentSave);
+            // Edit Student modal listeners REMOVED
 
-            // NEW: Note Modal Listeners
+            // Note Modal Listeners
             modalNoteCancelBtn.addEventListener('click', closeNoteModal);
             modalNoteSaveBtn.addEventListener('click', handleNoteSave);
             
-            // NEW: Re-add Modal Listeners
+            // Re-add Modal Listeners
             modalReAddCancelBtn.addEventListener('click', closeReAddModal);
             modalReAddQ1.addEventListener('click', () => handleReAdd(1));
             modalReAddQ2.addEventListener('click', () => handleReAdd(2));
