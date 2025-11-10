@@ -145,16 +145,36 @@
         }
 
         /* Auth Status Pushed Far Right */
+        /* MODIFIED: Auth status is now inside the bottom row controls */
         #auth-status {
-            font-size: 0.9rem;
+            font-size: 0.7rem; /* Reduced size to fit better under the button */
             color: var(--fg-gray);
+            margin: 0; 
+            padding: 0;
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-align: center; /* Center text under the button */
+        }
+        
+        /* NEW: Vertical stack for Help Button and Status */
+        #help-status-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+        }
+        
+        /* Auth Status Container (when independent) */
+        .auth-status-container-far-right {
             margin-left: auto; /* Pushes element to the far right */
             display: block; 
-            white-space: nowrap;
             flex-shrink: 0;
             align-self: flex-start; /* Aligns to the top right of the overall header */
             padding-top: 10px; /* Aligns visually better with the top row's content */
+            font-size: 0.9rem;
+            color: var(--fg-gray);
         }
+        
         .connected { color: var(--green) !important; }
         .disconnected { color: var(--red) !important; }
 
@@ -633,7 +653,7 @@
                     </div>
                 </div>
                 
-                <!-- BOTTOM ROW: Tabs and Help Button (Hub Buttons) -->
+                <!-- BOTTOM ROW: Tabs and Help Button/Status Stack -->
                 <div id="bottom-row-controls">
                     <!-- Tabs -->
                     <div class="header-tabs">
@@ -641,17 +661,24 @@
                         <button id="classroom-tab-btn" class="tab-btn">Classroom View</button>
                     </div>
                     
-                    <!-- Help Button -->
-                    <button id="help-btn" class="btn">
-                        Help 
-                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </button>
+                    <!-- NEW: Help Button and Auth Status Vertical Stack -->
+                    <div id="help-status-group">
+                        <!-- Help Button -->
+                        <button id="help-btn" class="btn">
+                            Help 
+                            <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </button>
+                        <!-- Auth Status (MOVED HERE) -->
+                        <div id="auth-status" class="connected">Connecting...</div>
+                    </div>
                 </div>
             </div>
             <!-- END: Main Control Group -->
             
-            <!-- Auth Status (PUSHED FAR RIGHT) -->
-            <div id="auth-status">Connecting...</div>
+            <!-- Auth Status Container (Removed its contents, keeping it for the far right push in case future elements are added) -->
+            <!-- We need to remove the whole element if its content is moved, but based on your previous request for connection status far right, let's keep a placeholder element just in case. 
+                 Since the content is now embedded, I will remove the original far-right div entirely for clean HTML. -->
+            
         </div>
     </header>
 
