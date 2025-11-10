@@ -64,7 +64,7 @@
             margin: 0 auto;
         }
         
-        /* NEW: Container for Logo, Title, and all Buttons (forces stacking vertically) */
+        /* NEW: Container for Logo, Title, and all Hub Buttons, stacked) */
         #main-control-group {
             display: flex;
             flex-direction: column; /* Stacks the top and bottom rows */
@@ -144,7 +144,6 @@
             /* Inherits .btn display: inline-flex and gap */
         }
 
-        /* Auth Status Pushed Far Right */
         /* MODIFIED: Auth status is now inside the bottom row controls */
         #auth-status {
             font-size: 0.7rem; /* Reduced size to fit better under the button */
@@ -539,13 +538,16 @@
             padding: 10px 12px;
             font-size: 1rem;
         }
+        
+        /* MODIFIED: Reduce size of queue action buttons */
         body.phone-mode .action-btn {
-            padding: 10px;
+            padding: 8px; /* Reduced from 10px */
         }
         body.phone-mode .action-btn svg {
-            width: 20px;
-            height: 20px;
+            width: 16px; /* Reduced from 20px */
+            height: 16px; /* Reduced from 20px */
         }
+
         body.phone-mode .sibling-group-ul li {
             font-size: 1rem;
         }
@@ -715,7 +717,7 @@
                     <!-- Column 3: Group Add -->
                     <div>
                         <h3>Group Add</h3>
-                        <p style="font-size: 0.9rem; color: var(--fg-gray); margin-bottom: 0.5rem;">Click "Group" in search to build a group below.</p>
+                        <p style="font-size: 0.9rem; color: var(--fg-gray); margin-bottom: 0.5rem;">Click "Sib" in search to build a group below.</p>
                         <div id="sibling-group-list">
                             <p style="padding: 0.5rem 0.75rem; color: var(--fg-gray);">No students staged.</p>
                         </div>
@@ -859,7 +861,7 @@
             <ul>
                 <li><strong>Find Student (Search)</strong>: Type a student's name to search the master roster. Tap one of the queue buttons (K-5, 6-8, Walk) next to the name to add them.</li>
                 <li><strong>Manual Add</strong>: Used for non-roster entries like visitors or substitutes. Enter a name and tap the desired queue button.</li>
-                <li><strong>Group Add</strong>: Use the "Group" button in the search results to stage students here, then click <strong>"Add Group to Sibling Queue"</strong> to add them all as a single entry.</li>
+                <li><strong>Group Add</strong>: Use the "Sib" button in the search results to stage students here, then click <strong>"Add Group to Sibling Queue"</strong> to add them all as a single entry.</li>
             </ul>
             
             <h3>Classroom View</h3>
@@ -1143,7 +1145,7 @@
                             <button class="btn btn-blue" data-queue="1" data-name="${fullName}" data-grade="${student.grade}" data-roster-id="${student.id}">K-5</button>
                             <button class="btn btn-green" data-queue="2" data-name="${fullName}" data-grade="${student.grade}" data-roster-id="${student.id}">6-8</button>
                             <button class="btn btn-gray" data-queue="3" data-name="${fullName}" data-grade="${student.grade}" data-roster-id="${student.id}">Walk</button>
-                            <button class="btn btn-purple" data-action="stage-group" data-name="${fullName}" data-grade="${student.grade}" data-roster-id="${student.id}">Group</button>
+                            <button class="btn btn-purple" data-action="stage-group" data-name="${fullName}" data-grade="${student.grade}" data-roster-id="${student.id}">Sib</button>
                         </div>
                     </div>
                     `;
