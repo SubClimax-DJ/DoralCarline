@@ -58,18 +58,41 @@
         }
         .header-content {
             display: flex;
-            justify-content: space-between; 
-            align-items: center;
+            justify-content: flex-start;
+            align-items: flex-start; /* Important for multi-row content on the left */
             gap: 0.5rem; 
             margin: 0 auto;
         }
-        /* Header Tabs are the Hub Buttons */
+        
+        /* NEW: Container for Logo, Title, and all Buttons (forces stacking vertically) */
+        #main-control-group {
+            display: flex;
+            flex-direction: column; /* Stacks the top and bottom rows */
+            flex-shrink: 1;
+            gap: 4px; /* small vertical gap between the rows */
+        }
+        
+        /* NEW: Top Row (Logo and Title) */
+        #top-row-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* NEW: Bottom Row (Tabs and Help Button) */
+        #bottom-row-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
         .header-tabs {
             display: flex;
             gap: 0.5rem;
             background-color: var(--bg-med);
             border-radius: 8px;
             padding: 4px;
+            flex-grow: 0; 
         }
         .tab-btn {
             background-color: transparent;
@@ -94,7 +117,7 @@
             border-radius: 50%;
             border: 2px solid var(--primary-accent);
             flex-shrink: 0;
-            object-fit: cover; /* Ensure image fits */
+            object-fit: cover; 
         }
         .title-text {
             font-size: 1.5rem;
@@ -102,6 +125,14 @@
             color: var(--fg);
             display: block;
         }
+        
+        /* Title Block does not grow */
+        #app-title-block {
+            flex-grow: 0; 
+            padding: 0 0.5rem; 
+            text-align: left; 
+        }
+
         /* Help Button Styling */
         #help-btn {
             background-color: var(--aqua);
@@ -110,16 +141,19 @@
             padding: 0.5rem 0.75rem;
             border-radius: 6px;
             flex-shrink: 0;
+            /* Inherits .btn display: inline-flex and gap */
         }
 
-        /* Auth Status (Top Right) */
-        #auth-status-container {
-            text-align: right;
-            flex-shrink: 0;
-        }
+        /* Auth Status Pushed Far Right */
         #auth-status {
-            font-size: 0.7rem; /* Smaller for corner placement */
+            font-size: 0.9rem;
             color: var(--fg-gray);
+            margin-left: auto; /* Pushes element to the far right */
+            display: block; 
+            white-space: nowrap;
+            flex-shrink: 0;
+            align-self: flex-start; /* Aligns to the top right of the overall header */
+            padding-top: 10px; /* Aligns visually better with the top row's content */
         }
         .connected { color: var(--green) !important; }
         .disconnected { color: var(--red) !important; }
@@ -243,23 +277,8 @@
             background-color: var(--bg-dark);
             margin: 0.25rem;
         }
-        
-        /* FIX: Ensure search item actions are horizontal on mobile */
-        .search-item-actions { 
-            display: flex; 
-            gap: 4px; 
-            flex-wrap: wrap; 
-            flex-shrink: 0; 
-            /* This was order: -1, but now it's set in phone-mode specifically */
-            /* order: -1; */ 
-        }
-        .search-item-actions .btn { 
-            padding: 4px 6px; 
-            font-size: 0.75rem; 
-            flex-shrink: 0; 
-            width: auto; 
-            height: 30px; 
-        }
+        .search-item-actions { display: flex; gap: 4px; }
+        .search-item-actions .btn { padding: 4px 6px; font-size: 0.75rem; }
         
         /* Tables */
         .table-container {
@@ -387,15 +406,14 @@
         #help-modal-box strong {
             color: var(--fg);
         }
-        /* Style the embedded icons */
-        #help-modal-box svg {
-            display: inline-block;
-            width: 18px; 
-            height: 18px; 
-            vertical-align: middle; 
-            margin-right: 5px;
+        /* ADDED: Style for SVG icons in help modal for consistent size */
+        .help-icon-wrapper {
+            display:inline-block; 
+            width: 1.25rem; 
+            height: 1.25rem; 
+            vertical-align: middle;
+            margin: 0 4px 0 0;
         }
-
 
         .modal-box h3 {
             color: var(--fg);
@@ -463,6 +481,8 @@
 
         /* --- Phone Mode (Always On) --- */
         
+        /* Simplify Header (already adjusted above for gap) */
+        
         /* Hide "Picked Up" list */
         body.phone-mode #queues-view > .section:nth-of-type(3) {
             display: none;
@@ -522,28 +542,29 @@
             margin-top: 1.5rem;
         }
 
-        /* FIX: Phone Mode Search Bar - PUSH BUTTONS BACK TO RIGHT */
+        /* * --- MODIFIED: Fix for Phone Mode Search Bar for Compact Horizontal Display --- 
+         */
         body.phone-mode #search-results {
             max-height: 30vh; 
         }
         body.phone-mode .search-item {
-            flex-direction: row; 
-            align-items: center;
+            flex-direction: row; /* Change from column to row */
+            justify-content: space-between; /* Push elements apart */
+            align-items: center; /* Vertically align everything */
             gap: 0.5rem; 
-            padding: 0.75rem; 
+            padding: 0.5rem 0.75rem; /* Reduced padding for smaller height */
+            font-size: 0.9rem; /* Make the text slightly smaller to fit */
         }
         body.phone-mode .search-item-actions {
-            /* Pushed back to the right side of the student name */
-            flex-direction: row; 
-            width: auto;
-            gap: 0.25rem; 
-            order: 1; /* PUSH BUTTONS RIGHT */
+            flex-direction: row; /* Buttons are now horizontal */
+            width: auto; /* Allow buttons to take only necessary width */
+            gap: 0.25rem; /* Small gap between buttons */
+            flex-wrap: wrap; /* Added flex-wrap for safety */
         }
         body.phone-mode .search-item-actions .btn {
-            /* Make buttons slightly smaller in the search list for compactness */
-            padding: 0.35rem 0.6rem; 
-            font-size: 0.7rem;
-            height: 30px; /* fixed height for uniform look */
+            width: auto; /* Button width is based on content, not 100% */
+            padding: 0.4rem 0.6rem; /* Make buttons smaller */
+            font-size: 0.75rem; /* Smaller font size for buttons */
         }
         
         /* --- Classroom View --- */
@@ -597,36 +618,40 @@
     <!-- HEADER -->
     <header>
         <div class="header-content">
-            
-            <!-- 1. Logo and Title - MOVED TO LEFT -->
-            <div class="title-logo-block" style="display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;">
-                <!-- Logo -->
-                <img class="logo" src="https://i.imgur.com/dBVPiFZ.png" alt="Doral Carline Logo (Image Inferred)" onerror="this.src='https://placehold.co/40x40/8d273e/f0f0f0?text=DCL'">
+            <!-- START: Main Control Group (Logo, Title, and all Hub Buttons, stacked) -->
+            <div id="main-control-group">
                 
-                <!-- Title Block with Subtitle -->
-                <div id="app-title-block" style="flex-shrink: 1; text-align: left;">
-                    <span class="title-text" style="font-size: 1.5rem; font-weight: 700; color: var(--fg); display: block;">Doral Carline App</span>
-                    <span style="font-size: 0.75rem; color: var(--fg-gray); display: block;">Created and Coded by Max Prebeg V4.7</span>
+                <!-- TOP ROW: Logo and Title -->
+                <div id="top-row-controls">
+                    <!-- Logo -->
+                    <img class="logo" src="https://i.imgur.com/dBVPiFZ.png" alt="Doral Carline Logo (Image Inferred)" onerror="this.src='https://placehold.co/40x40/8d273e/f0f0f0?text=DCL'">
+                    
+                    <!-- Title Block with Subtitle -->
+                    <div id="app-title-block"> 
+                        <span class="title-text" style="font-size: 1.5rem; font-weight: 700; color: var(--fg); display: block;">Doral Carline App</span>
+                        <span style="font-size: 0.75rem; color: var(--fg-gray); display: block;">Created and Coded by Max Prebeg V4.7</span>
+                    </div>
+                </div>
+                
+                <!-- BOTTOM ROW: Tabs and Help Button (Hub Buttons) -->
+                <div id="bottom-row-controls">
+                    <!-- Tabs -->
+                    <div class="header-tabs">
+                        <button id="queues-tab-btn" class="tab-btn active">Queues</button>
+                        <button id="classroom-tab-btn" class="tab-btn">Classroom View</button>
+                    </div>
+                    
+                    <!-- Help Button -->
+                    <button id="help-btn" class="btn">
+                        Help 
+                        <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </button>
                 </div>
             </div>
-
-            <!-- 2. Hub Buttons (Queues, Classroom, Help) - MOVED TO LEFT, NEXT TO TITLE -->
-            <div class="hub-buttons" style="display: flex; align-items: center; gap: 0.5rem; flex-grow: 1; justify-content: flex-start;">
-                <div class="header-tabs">
-                    <button id="queues-tab-btn" class="tab-btn active">Queues</button>
-                    <button id="classroom-tab-btn" class="tab-btn">Classroom View</button>
-                </div>
-                <!-- Help Button -->
-                <button id="help-btn" class="btn">
-                    Help 
-                    <svg style="width: 20px; height: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </button>
-            </div>
+            <!-- END: Main Control Group -->
             
-            <!-- 3. Auth Status - MOVED TO FAR RIGHT -->
-            <div id="auth-status-container" style="display: flex; flex-direction: column; align-items: flex-end; flex-shrink: 0;">
-                <div id="auth-status">Connecting...</div>
-            </div>
+            <!-- Auth Status (PUSHED FAR RIGHT) -->
+            <div id="auth-status">Connecting...</div>
         </div>
     </header>
 
@@ -796,11 +821,11 @@
 
             <h4>Queue Actions (Buttons in the table):</h4>
             <ul>
-                <!-- FIXED: Inserted actual SVG code for icons -->
-                <li><strong style="color: var(--yellow);">Highlight (<svg style="width: 18px; height: 18px; vertical-align: middle; margin-right: 5px; color: var(--yellow); display: inline-block;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.846 5.673a1 1 0 00.95.69h5.969c.969 0 1.371 1.24.588 1.81l-4.83 3.51a1 1 0 00-.364 1.118l1.846 5.673c.3.921-.755 1.688-1.54 1.118l-4.83-3.51a1 1 0 00-1.175 0l-4.83 3.51c-.784.57-1.838-.197-1.54-1.118l1.846-5.673a1 1 0 00-.364-1.118L2.14 11.099c-.783-.57-.38-1.81.588-1.81h5.97a1 1 0 00.95-.69L11.049 2.927z"></path></svg>)</strong>: Toggles a bright yellow highlight on the row. Used to alert staff (e.g., student is outside).</li>
-                <li><strong style="color: var(--blue);">Note (<svg style="width: 18px; height: 18px; vertical-align: middle; margin-right: 5px; color: var(--blue); display: inline-block;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>)</strong>: Opens a modal to add or edit a specific note for that student (e.g., 'Mom has changed mind', 'Needs EpiPen').</li>
-                <li><strong style="color: var(--red);">Dismiss (<svg style="width: 18px; height: 18px; vertical-align: middle; margin-right: 5px; color: var(--red); display: inline-block;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>)</strong>: Removes the student/group from the active queue and logs them as 'Picked Up'.</li>
-                <li><strong style="color: var(--aqua);">Re-add (<svg style="width: 18px; height: 18px; vertical-align: middle; margin-right: 5px; color: var(--aqua); display: inline-block;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-4 4v6m0-6V7m0 0h.01M12 7h.01M12 7V3l-3 4m3-4l3 4"></path></svg>)</strong>: (Only visible in 'Picked Up' list) Re-adds a student to an active queue if they were dismissed by mistake.</li>
+                <!-- ICONS FIXED HERE -->
+                <li><strong style="color: var(--yellow);">Highlight</strong> (<span class="help-icon-wrapper" style="stroke: var(--yellow);"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.846 5.673a1 1 0 00.95.69h5.969c.969 0 1.371 1.24.588 1.81l-4.83 3.51a1 1 0 00-.364 1.118l1.846 5.673c.3.921-.755 1.688-1.54 1.118l-4.83-3.51a1 1 0 00-1.175 0l-4.83 3.51c-.784.57-1.838-.197-1.54-1.118l1.846-5.673a1 1 0 00-.364-1.118L2.14 11.099c-.783-.57-.38-1.81.588-1.81h5.97a1 1 0 00.95-.69L11.049 2.927z"></path></svg></span>): Toggles a bright yellow highlight on the row. Used to alert staff (e.g., student is outside).</li>
+                <li><strong style="color: var(--blue);">Note</strong> (<span class="help-icon-wrapper" style="stroke: var(--blue);"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></span>): Opens a modal to add or edit a specific note for that student (e.g., 'Mom has changed mind', 'Needs EpiPen').</li>
+                <li><strong style="color: var(--red);">Dismiss</strong> (<span class="help-icon-wrapper" style="stroke: var(--red);"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></span>): Removes the student/group from the active queue and logs them as 'Picked Up'.</li>
+                <li><strong style="color: var(--aqua);">Re-add</strong> (<span class="help-icon-wrapper" style="stroke: var(--aqua);"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-4 4v6m0-6V7m0 0h.01M12 7h.01M12 7V3l-3 4m3-4l3 4"></path></svg></span>): (Only visible in 'Picked Up' list) Re-adds a student to an active queue if they were dismissed by mistake.</li>
             </ul>
 
             <h4>Adding Students:</h4>
@@ -957,6 +982,8 @@
         const pickedUpTableBody = document.getElementById('pickedup-table-body');
         const pickedUpCount = document.getElementById('pickedup-count');
         
+        // Admin Panel (REMOVED)
+        
         // Note Modal
         const noteModalBackdrop = document.getElementById('note-modal-backdrop');
         const modalNoteQueue = document.getElementById('modal-note-queue');
@@ -1018,6 +1045,7 @@
         const PICKEDUP_COLLECTION = 'queue_pickedup';
         const ROSTER_COLLECTION = 'ROSTER';
         const PERMANENT_GROUPS_COLLECTION = 'permanent_groups';
+        // Config collection removed
 
         // --- SVG Icons ---
         const icons = {
@@ -1079,11 +1107,11 @@
                     const fullName = `${student.firstName} ${student.lastName}`;
                     return `
                     <div class="search-item">
-                        <div>
+                        <div> <!-- Name on Left -->
                             <span style="font-weight: 500;">${fullName}</span>
                             <span style="color: var(--fg-gray); font-size: 0.8rem; margin-left: 4px;">(Gr: ${student.grade})</span>
                         </div>
-                        <div class="search-item-actions">
+                        <div class="search-item-actions"> <!-- Buttons on Right -->
                             <!-- UPDATED: Use btn-blue (primary-accent) for K-5 queue button -->
                             <button class="btn btn-blue" data-queue="1" data-name="${fullName}" data-grade="${student.grade}" data-roster-id="${student.id}">K-5</button>
                             <button class="btn btn-green" data-queue="2" data-name="${fullName}" data-grade="${student.grade}" data-roster-id="${student.id}">6-8</button>
@@ -1367,6 +1395,8 @@
         }
 
 
+        // Admin render functions REMOVED
+
         // --- Firebase Actions ---
 
         async function addStudentToQueue(queueNum, name, grade, rosterId = null) {
@@ -1546,6 +1576,8 @@
             }
         }
 
+        // Admin clear functions REMOVED
+
         async function removePickedUpStudent(docId) {
             try {
                 const docRef = doc(db, pickedupColRef.path, docId);
@@ -1641,6 +1673,10 @@
 
         // --- Modal Functions ---
         
+        // Password Modal functions REMOVED
+        
+        // Edit Student Modal functions REMOVED
+
         function openReAddModal(docId, name, grade, rosterId) {
             modalReAddDocId.value = docId;
             modalReAddName.value = name;
@@ -1693,6 +1729,8 @@
             closeConfirmationModal();
         }
         
+        // handlePasswordConfirm REMOVED
+
         // NEW: Help Modal Functions
         function openHelpModal() {
             helpModalBackdrop.style.display = 'flex';
@@ -1716,16 +1754,19 @@
                     if (user) {
                         userId = user.uid;
                         authStatus.textContent = "Connected";
+                        authStatus.classList.remove('disconnected');
                         authStatus.classList.add('connected');
                         setupListeners();
                     } else {
                         authStatus.textContent = "Connection Failed. Not Authenticated.";
+                        authStatus.classList.remove('connected');
                         authStatus.classList.add('disconnected');
                     }
                 });
             } catch (error) {
                 console.error("Firebase Initialization Error: ", error);
                 authStatus.textContent = "Connection Failed. Check console.";
+                authStatus.classList.remove('connected');
                 authStatus.classList.add('disconnected');
             }
         }
@@ -1737,26 +1778,28 @@
             q2ColRef = collection(db, `/artifacts/${appId}/public/data/${Q2_COLLECTION}`);
             q3ColRef = collection(db, `/artifacts/${appId}/public/data/${Q3_COLLECTION}`);
             pickedupColRef = collection(db, `/artifacts/${appId}/public/data/${PICKEDUP_COLLECTION}`);
+            // Roster and Groups are still needed for search
             rosterColRef = collection(db, `/artifacts/${appId}/public/data/${ROSTER_COLLECTION}`);
             permanentGroupsColRef = collection(db, `/artifacts/${appId}/public/data/${PERMANENT_GROUPS_COLLECTION}`);
+            // Broadcast listener REMOVED
 
             // Listeners
             onSnapshot(query(q1ColRef), (snapshot) => {
                 currentQ1 = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderQueueTable(q1TableBody, q1Count, Q1_COLLECTION, currentQ1);
-                if (classroomView.style.display !== 'none') renderClassroomView(); 
+                if (classroomView.style.display !== 'none') renderClassroomView(); // NEW
             }, (error) => console.error("Q1 Snapshot Error:", error));
 
             onSnapshot(query(q2ColRef), (snapshot) => {
                 currentQ2 = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderSiblingTable(currentQ2);
-                if (classroomView.style.display !== 'none') renderClassroomView(); 
+                if (classroomView.style.display !== 'none') renderClassroomView(); // NEW
             }, (error) => console.error("Q2 Snapshot Error:", error));
 
             onSnapshot(query(q3ColRef), (snapshot) => {
                 currentQ3 = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 renderQueueTable(q3TableBody, q3Count, Q3_COLLECTION, currentQ3); 
-                if (classroomView.style.display !== 'none') renderClassroomView(); 
+                if (classroomView.style.display !== 'none') renderClassroomView(); // NEW
             }, (error) => console.error("Q3 Snapshot Error:", error));
             
             onSnapshot(query(pickedupColRef), (snapshot) => {
@@ -1786,6 +1829,7 @@
                 currentPermanentGroups.sort((a, b) => a.groupName.localeCompare(b.groupName));
             }, (error) => console.error("Permanent Groups Snapshot Error:", error));
 
+            // Broadcast listener REMOVED
         }
 
         function filterStudents(searchText) {
@@ -1803,10 +1847,14 @@
             renderSearchResults(filteredStudents, filteredGroups);
         }
 
+        // filterAdminGroupSearch REMOVED
+        
         // --- Event Listeners ---
         document.addEventListener('DOMContentLoaded', () => {
 
             setupFirebase();
+            
+            // Phone mode listeners REMOVED (it's hardcoded)
             
             // NEW: Tab Toggling Listeners
             queuesTabBtn.addEventListener('click', () => {
@@ -1875,6 +1923,8 @@
             }
             );
             
+            // Admin Panel Listeners REMOVED
+
             // --- Delegated clicks for all TABLE actions ---
             document.body.addEventListener('click', async (e) => {
                 const target = e.target.closest('.action-btn');
@@ -1913,9 +1963,12 @@
             });
             
             // --- Modal Listeners ---
+            // Password modal listeners REMOVED
             confirmationModalCancelBtn.addEventListener('click', closeConfirmationModal);
             confirmationModalConfirmBtn.addEventListener('click', handleConfirmationConfirm);
             
+            // Edit Student modal listeners REMOVED
+
             // Note Modal Listeners
             modalNoteCancelBtn.addEventListener('click', closeNoteModal);
             modalNoteSaveBtn.addEventListener('click', handleNoteSave);
